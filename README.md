@@ -1,3 +1,6 @@
++# secretOHMproject
++Repository for the Ohm project known as "horror escape"
+
 ##How to install:
 
 Clone the repo into `\Steam\steamapps\common\GarrysMod\garrysmod\gamemodes\` 
