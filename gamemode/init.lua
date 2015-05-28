@@ -3,6 +3,7 @@ include( 'shared.lua' )
 include( 'player.lua' )
 include( 'npc.lua' )
 include( 'variable_edit.lua' )
+include( "resources.lua" )
 
 GM.PlayerSpawnTime = {}
 

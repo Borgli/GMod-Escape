@@ -83,7 +83,7 @@ end
    Return true if this player should take damage from this attacker
 -----------------------------------------------------------]]
 function GM:PlayerShouldTakeDamage( ply, attacker )
-   if (ply:Team() == attacker:Team()) then return false
+   if (attacker:IsValid() and ply:Team() == attacker:Team()) then return false
    else return true
    end
 end
@@ -151,11 +151,11 @@ function GM:CreateTeams()
    if ( not GAMEMODE.TeamBased ) then return end
 
    TEAM_SURVIVORS = 1
-   team.SetUp( TEAM_SURVIVORS, "Blue Team", Color( 0, 0, 255 ) )
+   team.SetUp( TEAM_SURVIVORS, "Survivors", Color( 0, 0, 255 ) )
    team.SetSpawnPoint( TEAM_SURVIVORS, "ai_hint" ) -- <-- This would be info_terrorist or some entity that is in your map
 
    TEAM_MONSTERS = 2
-   team.SetUp( TEAM_MONSTERS, "Orange Team", Color( 255, 150, 0 ) )
+   team.SetUp( TEAM_MONSTERS, "Monsters", Color( 255, 150, 0 ) )
    team.SetSpawnPoint( TEAM_MONSTERS, "sky_camera" ) -- <-- This would be info_terrorist or some entity that is in your map
 
    --[[	TEAM_SPECTATORS = 3

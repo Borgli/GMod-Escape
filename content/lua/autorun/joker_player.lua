@@ -1,0 +1,1 @@
+layer_manager.AddValidModel( "Injustice Joker",                     "models/player/bobert/joker.mdl" )  list.Set( "PlayerOptionsModel",  "Injustice Joker",                     "models/player/bobert/joker.mdl" ) "
