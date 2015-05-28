@@ -5,17 +5,17 @@ include( 'taunt_camera.lua' )
 
 local PLAYER = {}
 
-PLAYER.DisplayName			= "Default Class"
+PLAYER.DisplayName			= "Survivor"
 
 PLAYER.WalkSpeed			= 400		-- How fast to move when not running
-PLAYER.RunSpeed				= 600		-- How fast to move when running
+PLAYER.RunSpeed				= 1200		-- How fast to move when running
 PLAYER.CrouchedWalkSpeed	= 0.3		-- Multiply move speed by this when crouching
 PLAYER.DuckSpeed			= 0.3		-- How fast to go from not ducking, to ducking
 PLAYER.UnDuckSpeed			= 0.3		-- How fast to go from ducking, to not ducking
 PLAYER.JumpPower			= 200		-- How powerful our jump should be
 PLAYER.CanUseFlashlight		= true		-- Can we use the flashlight
-PLAYER.MaxHealth			= 100		-- Max health we can have
-PLAYER.StartHealth			= 100		-- How much health we start with
+PLAYER.MaxHealth			= 200		-- Max health we can have
+PLAYER.StartHealth			= 200		-- How much health we start with
 PLAYER.StartArmor			= 0			-- How much armour we start with
 PLAYER.DropWeaponOnDie		= false		-- Do we drop our weapon when we die
 PLAYER.TeammateNoCollide	= true		-- Do we collide with teammates or run straight through them
@@ -57,18 +57,17 @@ end
 --
 function PLAYER:Loadout()
 
-	self.Player:Give( "weapon_pistol" )
-	self.Player:GiveAmmo( 255, "Pistol", true )
+    self.Player:Give( "weapon_pistol" )
+    self.Player:GiveAmmo( 255, "Pistol", true )
 
 end
 
 function PLAYER:SetModel()
 
-	--local cl_playermodel = self.Player:GetInfo( "cl_playermodel" )
-	local cl_playermodel = "joker"
-	local modelname = player_manager.TranslatePlayerModel( cl_playermodel )
-	util.PrecacheModel( modelname )
-	self.Player:SetModel( modelname )
+    local cl_playermodel = self.Player:GetInfo( "cl_playermodel" )
+    local modelname = player_manager.TranslatePlayerModel( cl_playermodel )
+    util.PrecacheModel( modelname )
+    self.Player:SetModel( modelname )
 
 end
 
@@ -121,11 +120,13 @@ end
 --
 function PLAYER:GetHandsModel()
 
-	-- return { model = "models/weapons/c_arms_cstrike.mdl", skin = 1, body = "0100000" }
+    -- return { model = "models/weapons/c_arms_cstrike.mdl", skin = 1, body = "0100000" }
 
-	local playermodel = player_manager.TranslateToPlayerModelName( self.Player:GetModel() )
-	return player_manager.TranslatePlayerHands( playermodel )
+    local playermodel = player_manager.TranslateToPlayerModelName( self.Player:GetModel() )
+    return player_manager.TranslatePlayerHands( playermodel )
 
 end
 
-player_manager.RegisterClass( "player_default", PLAYER, nil )
+player_manager.RegisterClass( "player_survivor", PLAYER, nil )
+
+

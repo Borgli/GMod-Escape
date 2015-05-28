@@ -286,10 +286,10 @@ function GM:PlayerSetModel( pl )
 
 
 	--local model = player_manager.TranslatePlayerModel("joker")
-	local model = "models/player/bobert/joker.mdl"
+	--[[local model = "models/player/bobert/joker.mdl"
 	util.PrecacheModel(model)
-	pl:SetModel(model)
-	--player_manager.RunClass( pl, "SetModel" )
+	pl:SetModel(model)]]--
+	player_manager.RunClass( pl, "SetModel" )
 	--pl:SetModel(Model("models/narry/shrek_playermodel_v1.mdl"))
 end
 
