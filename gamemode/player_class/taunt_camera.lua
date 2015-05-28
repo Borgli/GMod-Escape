@@ -25,7 +25,7 @@ function TauntCamera()
 	--
 	CAM.ShouldDrawLocalPlayer = function( self, ply, on )
 
-		return on || OutLerp < 1
+		return on or OutLerp < 1
 
 	end
 
@@ -34,18 +34,18 @@ function TauntCamera()
 	--
 	CAM.CalcView = function( self, view, ply, on )
 		
-		if ( !ply:Alive() ) then on = false end
+		if ( not ply:Alive() ) then on = false end
 
-		if ( WasOn != on ) then
+		if ( WasOn ~= on ) then
 
 			if ( on ) then InLerp = 0 end
-			if ( !on ) then OutLerp = 0 end
+			if ( not on ) then OutLerp = 0 end
 
 			WasOn = on
 
 		end
 
-		if ( !on && OutLerp >= 1 ) then
+		if ( not on and OutLerp >= 1 ) then
 
 			CustomAngles = view.angles * 1
 			PlayerLockAngles = nil
@@ -93,8 +93,8 @@ function TauntCamera()
 	--
 	CAM.CreateMove = function( self, cmd, ply, on )
 		
-		if ( !ply:Alive() ) then on = false end
-		if ( !on ) then return end
+		if ( not ply:Alive() ) then on = false end
+		if ( not on ) then return end
 
 		if ( PlayerLockAngles == nil ) then
 			PlayerLockAngles = CustomAngles * 1
