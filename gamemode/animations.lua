@@ -8,13 +8,13 @@ function GM:HandlePlayerJumping( ply, velocity )
 
 	-- airwalk more like hl2mp, we airwalk until we have 0 velocity, then it's the jump animation
 	-- underwater we're alright we airwalking
-	if ( !ply.m_bJumping && !ply:OnGround() && ply:WaterLevel() <= 0 ) then
+	if ( not ply.m_bJumping and not ply:OnGround() and ply:WaterLevel() <= 0 ) then
 
-		if ( !ply.m_fGroundTime ) then
+		if ( not ply.m_fGroundTime ) then
 
 			ply.m_fGroundTime = CurTime()
-			
-		elseif ( CurTime() - ply.m_fGroundTime ) > 0 && velocity:Length2D() < 0.5 then
+
+		elseif ( CurTime() - ply.m_fGroundTime ) > 0 and velocity:Length2D() < 0.5 then
 
 			ply.m_bJumping = true
 			ply.m_bFirstJumpFrame = false
@@ -24,22 +24,22 @@ function GM:HandlePlayerJumping( ply, velocity )
 	end
 
 	if ply.m_bJumping then
-	
+
 		if ply.m_bFirstJumpFrame then
 
 			ply.m_bFirstJumpFrame = false
 			ply:AnimRestartMainSequence()
 
 		end
-		
-		if ( ply:WaterLevel() >= 2 ) || ( ( CurTime() - ply.m_flJumpStartTime ) > 0.2 && ply:OnGround() ) then
+
+		if ( ply:WaterLevel() >= 2 ) or ( ( CurTime() - ply.m_flJumpStartTime ) > 0.2 and ply:OnGround() ) then
 
 			ply.m_bJumping = false
 			ply.m_fGroundTime = nil
 			ply:AnimRestartMainSequence()
 
 		end
-		
+
 		if ply.m_bJumping then
 			ply.CalcIdeal = ACT_MP_JUMP
 			return true
@@ -52,7 +52,7 @@ end
 
 function GM:HandlePlayerDucking( ply, velocity )
 
-	if ( !ply:Crouching() ) then return false end
+	if ( not ply:Crouching() ) then return false end
 
 	if ( velocity:Length2D() > 0.5 ) then
 		ply.CalcIdeal = ACT_MP_CROUCHWALK
@@ -66,7 +66,7 @@ end
 
 function GM:HandlePlayerNoClipping( ply, velocity )
 
-	if ( ply:GetMoveType() != MOVETYPE_NOCLIP || ply:InVehicle() ) then
+	if ( ply:GetMoveType() ~= MOVETYPE_NOCLIP or ply:InVehicle() ) then
 
 		if ( ply.m_bWasNoclipping ) then
 
@@ -80,7 +80,7 @@ function GM:HandlePlayerNoClipping( ply, velocity )
 
 	end
 
-	if ( !ply.m_bWasNoclipping ) then
+	if ( not ply.m_bWasNoclipping ) then
 
 		ply:AnimRestartGesture( GESTURE_SLOT_CUSTOM, ACT_GMOD_NOCLIP_LAYER, false )
 		if ( CLIENT ) then ply:SetIK( false ) end
@@ -120,7 +120,7 @@ function GM:HandlePlayerLanding( ply, velocity, WasOnGround )
 
 	if ( ply:GetMoveType() == MOVETYPE_NOCLIP ) then return end
 
-	if ( ply:IsOnGround() && !WasOnGround ) then
+	if ( ply:IsOnGround() and not WasOnGround ) then
 		ply:AnimRestartGesture( GESTURE_SLOT_JUMP, ACT_LAND, true )
 	end
 
@@ -128,14 +128,14 @@ end
 
 function GM:HandlePlayerDriving( ply )
 
-	if ( !ply:InVehicle() ) then return false end
+	if ( not ply:InVehicle() ) then return false end
 
 	local pVehicle = ply:GetVehicle()
 
-	if ( !pVehicle.HandleAnimation && pVehicle.GetVehicleClass ) then
+	if ( not pVehicle.HandleAnimation and pVehicle.GetVehicleClass ) then
 		local c = pVehicle:GetVehicleClass()
 		local t = list.Get( "Vehicles" )[ c ]
-		if ( t && t.Members && t.Members.HandleAnimation ) then
+		if ( t and t.Members and t.Members.HandleAnimation ) then
 			pVehicle.HandleAnimation = t.Members.HandleAnimation
 		else
 			pVehicle.HandleAnimation = true -- Prevent this if block from trying to assign HandleAnimation again.
@@ -146,31 +146,31 @@ function GM:HandlePlayerDriving( ply )
 
 	if ( isfunction( pVehicle.HandleAnimation ) ) then
 		local seq = pVehicle:HandleAnimation( ply )
-		if ( seq != nil ) then
+		if ( seq ~= nil ) then
 			ply.CalcSeqOverride = seq
 		end
 	end
 
 	if ( ply.CalcSeqOverride == -1 ) then -- pVehicle.HandleAnimation did not give us an animation
-		if ( class == "prop_vehicle_jeep" ) then
-			ply.CalcSeqOverride = ply:LookupSequence( "drive_jeep" )
-		elseif ( class == "prop_vehicle_airboat" ) then
-			ply.CalcSeqOverride = ply:LookupSequence( "drive_airboat" )
-		elseif ( class == "prop_vehicle_prisoner_pod" && pVehicle:GetModel() == "models/vehicles/prisoner_pod_inner.mdl" ) then
-			-- HACK!!
-			ply.CalcSeqOverride = ply:LookupSequence( "drive_pd" )
-		else
-			ply.CalcSeqOverride = ply:LookupSequence( "sit_rollercoaster" )
-		end
+	if ( class == "prop_vehicle_jeep" ) then
+		ply.CalcSeqOverride = ply:LookupSequence( "drive_jeep" )
+	elseif ( class == "prop_vehicle_airboat" ) then
+		ply.CalcSeqOverride = ply:LookupSequence( "drive_airboat" )
+	elseif ( class == "prop_vehicle_prisoner_pod" and pVehicle:GetModel() == "models/vehicles/prisoner_pod_inner.mdl" ) then
+		-- HACKnot not
+		ply.CalcSeqOverride = ply:LookupSequence( "drive_pd" )
+	else
+		ply.CalcSeqOverride = ply:LookupSequence( "sit_rollercoaster" )
 	end
-	
-	local use_anims = ( ply.CalcSeqOverride == ply:LookupSequence( "sit_rollercoaster" ) || ply.CalcSeqOverride == ply:LookupSequence( "sit" ) )
-	if ( use_anims && ply:GetAllowWeaponsInVehicle() && IsValid( ply:GetActiveWeapon() ) ) then
+	end
+
+	local use_anims = ( ply.CalcSeqOverride == ply:LookupSequence( "sit_rollercoaster" ) or ply.CalcSeqOverride == ply:LookupSequence( "sit" ) )
+	if ( use_anims and ply:GetAllowWeaponsInVehicle() and IsValid( ply:GetActiveWeapon() ) ) then
 		local holdtype = ply:GetActiveWeapon():GetHoldType()
 		if ( holdtype == "smg" ) then holdtype = "smg1" end
 
 		local seqid = ply:LookupSequence( "sit_" .. holdtype )
-		if ( seqid != -1 ) then
+		if ( seqid ~= -1 ) then
 			ply.CalcSeqOverride = seqid
 		end
 	end
@@ -196,7 +196,7 @@ function GM:UpdateAnimation( ply, velocity, maxseqgroundspeed )
 	-- if we're under water we want to constantly be swimming..
 	if ( ply:WaterLevel() >= 2 ) then
 		rate = math.max( rate, 0.5 )
-	elseif ( !ply:IsOnGround() && len >= 1000 ) then
+	elseif ( not ply:IsOnGround() and len >= 1000 ) then
 		rate = 0.1
 	end
 
@@ -205,7 +205,7 @@ function GM:UpdateAnimation( ply, velocity, maxseqgroundspeed )
 	if ( ply:InVehicle() ) then
 
 		local Vehicle = ply:GetVehicle()
-		
+
 		-- We only need to do this clientside..
 		if ( CLIENT ) then
 			--
@@ -225,7 +225,7 @@ function GM:UpdateAnimation( ply, velocity, maxseqgroundspeed )
 			ply:SetPoseParameter( "vehicle_steer", steer )
 
 		end
-		
+
 	end
 
 	if ( CLIENT ) then
@@ -243,7 +243,7 @@ function GM:GrabEarAnimation( ply )
 
 	ply.ChatGestureWeight = ply.ChatGestureWeight or 0
 
-	-- Don't show this when we're playing a taunt!
+	-- Don't show this when we're playing a tauntnot 
 	if ( ply:IsPlayingTaunt() ) then return end
 
 	if ( ply:IsTyping() ) then
@@ -253,10 +253,10 @@ function GM:GrabEarAnimation( ply )
 	end
 
 	if ( ply.ChatGestureWeight > 0 ) then
-	
+
 		ply:AnimRestartGesture( GESTURE_SLOT_VCD, ACT_GMOD_IN_CHAT, true )
 		ply:AnimSetGestureWeight( GESTURE_SLOT_VCD, ply.ChatGestureWeight )
-	
+
 	end
 
 end
@@ -270,10 +270,10 @@ function GM:MouthMoveAnimation( ply )
 	if ( FlexNum <= 0 ) then return end
 
 	for i = 0, FlexNum - 1 do
-	
+
 		local Name = ply:GetFlexName( i )
 
-		if ( Name == "jaw_drop" || Name == "right_part" || Name == "left_part" || Name == "right_mouth_drop" || Name == "left_mouth_drop" ) then
+		if ( Name == "jaw_drop" or Name == "right_part" or Name == "left_part" or Name == "right_mouth_drop" or Name == "left_mouth_drop" ) then
 
 			if ( ply:IsSpeaking() ) then
 				ply:SetFlexWeight( i, math.Clamp( ply:VoiceVolume() * 2, 0, 2 ) )
@@ -293,12 +293,12 @@ function GM:CalcMainActivity( ply, velocity )
 
 	self:HandlePlayerLanding( ply, velocity, ply.m_bWasOnGround )
 
-	if ( self:HandlePlayerNoClipping( ply, velocity ) ||
-		self:HandlePlayerDriving( ply ) ||
-		self:HandlePlayerVaulting( ply, velocity ) ||
-		self:HandlePlayerJumping( ply, velocity ) ||
-		self:HandlePlayerDucking( ply, velocity ) ||
-		self:HandlePlayerSwimming( ply, velocity ) ) then
+	if ( self:HandlePlayerNoClipping( ply, velocity ) or
+			self:HandlePlayerDriving( ply ) or
+			self:HandlePlayerVaulting( ply, velocity ) or
+			self:HandlePlayerJumping( ply, velocity ) or
+			self:HandlePlayerDucking( ply, velocity ) or
+			self:HandlePlayerSwimming( ply, velocity ) ) then
 
 	else
 
@@ -308,7 +308,7 @@ function GM:CalcMainActivity( ply, velocity )
 	end
 
 	ply.m_bWasOnGround = ply:IsOnGround()
-	ply.m_bWasNoclipping = ( ply:GetMoveType() == MOVETYPE_NOCLIP && !ply:InVehicle() )
+	ply.m_bWasNoclipping = ( ply:GetMoveType() == MOVETYPE_NOCLIP and not ply:InVehicle() )
 
 	return ply.CalcIdeal, ply.CalcSeqOverride
 
@@ -346,44 +346,44 @@ end
 function GM:DoAnimationEvent( ply, event, data )
 
 	if ( event == PLAYERANIMEVENT_ATTACK_PRIMARY ) then
-	
+
 		if ply:Crouching() then
 			ply:AnimRestartGesture( GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_MP_ATTACK_CROUCH_PRIMARYFIRE, true )
 		else
 			ply:AnimRestartGesture( GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_MP_ATTACK_STAND_PRIMARYFIRE, true )
 		end
-		
+
 		return ACT_VM_PRIMARYATTACK
-	
+
 	elseif ( event == PLAYERANIMEVENT_ATTACK_SECONDARY ) then
-	
+
 		-- there is no gesture, so just fire off the VM event
 		return ACT_VM_SECONDARYATTACK
-		
+
 	elseif ( event == PLAYERANIMEVENT_RELOAD ) then
-	
+
 		if ply:Crouching() then
 			ply:AnimRestartGesture( GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_MP_RELOAD_CROUCH, true )
 		else
 			ply:AnimRestartGesture( GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_MP_RELOAD_STAND, true )
 		end
-		
+
 		return ACT_INVALID
-		
+
 	elseif ( event == PLAYERANIMEVENT_JUMP ) then
-	
+
 		ply.m_bJumping = true
 		ply.m_bFirstJumpFrame = true
 		ply.m_flJumpStartTime = CurTime()
-	
+
 		ply:AnimRestartMainSequence()
-	
+
 		return ACT_INVALID
-	
+
 	elseif ( event == PLAYERANIMEVENT_CANCEL_RELOAD ) then
-	
+
 		ply:AnimResetGestureSlot( GESTURE_SLOT_ATTACK_AND_RELOAD )
-		
+
 		return ACT_INVALID
 	end
 

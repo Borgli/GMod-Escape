@@ -51,15 +51,15 @@ function GM:HUDShouldDraw( name )
 	-- Allow the weapon to override this
 	local ply = LocalPlayer()
 	if ( IsValid( ply ) ) then
-	
+
 		local wep = ply:GetActiveWeapon()
-		
+
 		if ( IsValid( wep ) and wep.HUDShouldDraw ~= nil ) then
-		
+
 			return wep.HUDShouldDraw( wep, name )
-		
+
 		end
-	
+
 	end
 
 	return true
@@ -139,34 +139,34 @@ end
 		Process the player's chat.. return true for no default
 -----------------------------------------------------------]]
 function GM:OnPlayerChat( player, strText, bTeamOnly, bPlayerIsDead )
-	
+
 	--
 	-- I've made this all look more complicated than it is. Here's the easy version
 	--
 	-- chat.AddText( player, Color( 255, 255, 255 ), ": ", strText )
 	--
-	
+
 	local tab = {}
-	
+
 	if ( bPlayerIsDead ) then
 		table.insert( tab, Color( 255, 30, 40 ) )
 		table.insert( tab, "*DEAD* " )
 	end
-	
+
 	if ( bTeamOnly ) then
 		table.insert( tab, Color( 30, 160, 40 ) )
 		table.insert( tab, "(TEAM) " )
 	end
-	
+
 	if ( IsValid( player ) ) then
 		table.insert( tab, player )
 	else
 		table.insert( tab, "Console" )
 	end
-	
+
 	table.insert( tab, Color( 255, 255, 255 ) )
 	table.insert( tab, ": " .. strText )
-	
+
 	chat.AddText( unpack(tab) )
 
 	return true
@@ -183,24 +183,24 @@ function GM:OnChatTab( str )
 	for word in string.gmatch( str, "%a+" ) do
 		LastWord = word
 	end
-	
+
 	if ( LastWord == nil ) then return str end
 
 	for k, v in pairs( player.GetAll() ) do
-		
+
 		local nickname = v:Nick()
-		
+
 		if ( string.len( LastWord ) < string.len( nickname ) and
-			 string.find( string.lower( nickname ), string.lower( LastWord ) ) == 1 ) then
-			
+				string.find( string.lower( nickname ), string.lower( LastWord ) ) == 1 ) then
+
 			str = string.sub( str, 1, ( string.len( LastWord ) * -1 ) - 1 )
 			str = str .. nickname
 			return str
-			
+
 		end
-		
+
 	end
-	
+
 	return str
 
 end
@@ -245,7 +245,7 @@ function GM:ChatText( playerindex, playername, text, filter )
 	else
 		Msg( text, "\n" )
 	end
-	
+
 	return false
 
 end
@@ -316,7 +316,7 @@ function GM:CalcVehicleView( Vehicle, ply, view )
 	-- Trace back from the original eye position, so we don't clip through walls/objects
 	local TargetOrigin = view.origin + ( view.angles:Forward() * -radius )
 	local WallOffset = 4
-	
+
 	local tr = util.TraceHull( {
 		start = view.origin,
 		endpos = TargetOrigin,
@@ -327,7 +327,7 @@ function GM:CalcVehicleView( Vehicle, ply, view )
 		mins = Vector( -WallOffset, -WallOffset, -WallOffset ),
 		maxs = Vector( WallOffset, WallOffset, WallOffset ),
 	} )
-	
+
 	view.origin = tr.HitPos
 	view.drawviewer = true
 
@@ -347,10 +347,10 @@ end
    Allows override of the default view
 -----------------------------------------------------------]]
 function GM:CalcView( ply, origin, angles, fov, znear, zfar )
-	
+
 	local Vehicle	= ply:GetVehicle()
 	local Weapon	= ply:GetActiveWeapon()
-	
+
 	local view = {}
 	view.origin		= origin
 	view.angles		= angles
@@ -368,7 +368,7 @@ function GM:CalcView( ply, origin, angles, fov, znear, zfar )
 	-- Let drive possibly alter the view
 	--
 	if ( drive.CalcView( ply, view ) ) then return view end
-	
+
 	--
 	-- Give the player manager a turn at altering the view
 	--
@@ -376,16 +376,16 @@ function GM:CalcView( ply, origin, angles, fov, znear, zfar )
 
 	-- Give the active weapon a go at changing the viewmodel position
 	if ( IsValid( Weapon ) ) then
-	
+
 		local func = Weapon.CalcView
 		if ( func ) then
 			view.origin, view.angles, view.fov = func( Weapon, ply, origin * 1, angles * 1, fov ) -- Note: *1 to copy the object so the child function can't edit it.
 		end
-	
+
 	end
-	
+
 	return view
-	
+
 end
 
 --
@@ -545,9 +545,9 @@ end
 function GM:CalcViewModelView( Weapon, ViewModel, OldEyePos, OldEyeAng, EyePos, EyeAng )
 
 	if ( not IsValid( Weapon ) ) then return end
-	
+
 	local vm_origin, vm_angles = EyePos, EyeAng
-	
+
 	-- Controls the position of all viewmodels
 	local func = Weapon.GetViewModelPosition
 	if ( func ) then
@@ -555,7 +555,7 @@ function GM:CalcViewModelView( Weapon, ViewModel, OldEyePos, OldEyeAng, EyePos, 
 		vm_origin = pos or vm_origin
 		vm_angles = ang or vm_angles
 	end
-	
+
 	-- Controls the position of individual viewmodels
 	func = Weapon.CalcViewModelView
 	if ( func ) then
@@ -563,7 +563,7 @@ function GM:CalcViewModelView( Weapon, ViewModel, OldEyePos, OldEyeAng, EyePos, 
 		vm_origin = pos or vm_origin
 		vm_angles = ang or vm_angles
 	end
-	
+
 	return vm_origin, vm_angles
 
 end
@@ -573,7 +573,7 @@ end
    Desc: Called before drawing the view model
 -----------------------------------------------------------]]
 function GM:PreDrawViewModel( ViewModel, Player, Weapon )
-	
+
 	if ( not IsValid( Weapon ) ) then return false end
 
 	player_manager.RunClass( Player, "PreDrawViewModel", ViewModel, Weapon )
@@ -590,7 +590,7 @@ end
 function GM:PostDrawViewModel( ViewModel, Player, Weapon )
 
 	if ( not IsValid( Weapon ) ) then return false end
-	
+
 	if ( Weapon.UseHands or not Weapon:IsScripted() ) then
 
 		local hands = Player:GetHands()

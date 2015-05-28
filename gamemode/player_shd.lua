@@ -7,7 +7,7 @@
 function GM:PlayerTraceAttack( ply, dmginfo, dir, trace )
 
 	return false
-	
+
 end
 
 --[[---------------------------------------------------------
@@ -40,7 +40,7 @@ end
    Name: gamemode:PlayerFootstep( ply, vPos, iFoot, strSoundName, fVolume, pFilter )
    Desc: Called when a player steps
 		pFilter is the recipient filter to use for effects/sounds
-			and is only valid SERVERSIDE. Clientside needs no filter!
+			and is only valid SERVERSIDE. Clientside needs no filternot 
 		Return true to not play normal sound
 -----------------------------------------------------------]]
 function GM:PlayerFootstep( ply, vPos, iFoot, strSoundName, fVolume, pFilter )
@@ -68,8 +68,8 @@ function GM:PlayerStepSoundTime( ply, iType, bWalking )
 	local fStepTime = 350
 	local fMaxSpeed = ply:GetMaxSpeed()
 
-	if ( iType == STEPSOUNDTIME_NORMAL || iType == STEPSOUNDTIME_WATER_FOOT ) then
-		
+	if ( iType == STEPSOUNDTIME_NORMAL or iType == STEPSOUNDTIME_WATER_FOOT ) then
+
 		if ( fMaxSpeed <= 100 ) then
 			fStepTime = 400
 		elseif ( fMaxSpeed <= 300 ) then
@@ -77,24 +77,24 @@ function GM:PlayerStepSoundTime( ply, iType, bWalking )
 		else
 			fStepTime = 250
 		end
-	
+
 	elseif ( iType == STEPSOUNDTIME_ON_LADDER ) then
-	
+
 		fStepTime = 450
-	
+
 	elseif ( iType == STEPSOUNDTIME_WATER_KNEE ) then
-	
+
 		fStepTime = 600
-	
+
 	end
-	
+
 	-- Step slower if crouching
 	if ( ply:Crouching() ) then
 		fStepTime = fStepTime + 50
 	end
-	
+
 	return fStepTime
-	
+
 end
 
 --[[---------------------------------------------------------
@@ -103,13 +103,13 @@ end
 		 the player is allowed to noclip, false to block
 -----------------------------------------------------------]]
 function GM:PlayerNoClip( pl, on )
-	
+
 	-- Allow noclip if we're in single player
 	if ( game.SinglePlayer() ) then return true end
-	
+
 	-- Don't if it's not.
 	return false
-	
+
 end
 
 --

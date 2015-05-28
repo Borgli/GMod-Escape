@@ -41,17 +41,17 @@ end
 function GM:DoPlayerDeath( ply, attacker, dmginfo )
 
 	ply:CreateRagdoll()
-	
+
 	ply:AddDeaths( 1 )
-	
+
 	if ( attacker:IsValid() and attacker:IsPlayer() ) then
-	
+
 		if ( attacker == ply ) then
 			attacker:AddFrags( -1 )
 		else
 			attacker:AddFrags( 1 )
 		end
-	
+
 	end
 
 end
@@ -86,14 +86,14 @@ timer.Create( "HostnameThink", 30, 0, HostnameThink )
 function GM:ShowTeam( ply )
 
 	if ( not GAMEMODE.TeamBased ) then return end
-	
+
 	local TimeBetweenSwitches = GAMEMODE.SecondsBetweenTeamSwitches or 10
 	if ( ply.LastTeamSwitch and RealTime() - ply.LastTeamSwitch < TimeBetweenSwitches ) then
 		ply.LastTeamSwitch = ply.LastTeamSwitch + 1
 		ply:ChatPrint( Format( "Please wait %i more seconds before trying to change team again", ( TimeBetweenSwitches - ( RealTime() - ply.LastTeamSwitch ) ) + 1 ) )
 		return false
 	end
-	
+
 	-- For clientside see cl_pickteam.lua
 	ply:SendLua( "GAMEMODE:ShowTeam()" )
 
@@ -117,7 +117,7 @@ function GM:CheckPassword( steamid, networkid, server_password, password, name )
 		end
 
 	end
-	
+
 	--
 	-- Returning true means they're allowed to join the server
 	--

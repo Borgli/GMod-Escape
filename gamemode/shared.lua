@@ -49,7 +49,7 @@ end
    Desc: Player has connects to the server (hasn't spawned)
 -----------------------------------------------------------]]
 function GM:PlayerConnect( name, address )
-    if (name == "DoDraugen") then print("Rune er awesome!") end;
+   if (name == "DoDraugen") then print("Rune er awesome!") end;
 end
 
 --[[---------------------------------------------------------
@@ -65,10 +65,10 @@ end
 -----------------------------------------------------------]]
 function GM:PhysgunPickup( ply, ent )
 
-	-- Don't pick up players
-	if ( ent:GetClass() == "player" ) then return false end
+   -- Don't pick up players
+   if ( ent:GetClass() == "player" ) then return false end
 
-	return true
+   return true
 end
 
 --[[---------------------------------------------------------
@@ -83,16 +83,16 @@ end
    Return true if this player should take damage from this attacker
 -----------------------------------------------------------]]
 function GM:PlayerShouldTakeDamage( ply, attacker )
-    if (ply:Team() == attacker:Team()) then return false
-        else return true
-        end
+   if (ply:Team() == attacker:Team()) then return false
+   else return true
+   end
 end
 
 --[[---------------------------------------------------------
    Name: Text to show in the server browser
 -----------------------------------------------------------]]
 function GM:GetGameDescription()
-	return self.Name
+   return self.Name
 end
 
 --[[---------------------------------------------------------
@@ -144,25 +144,25 @@ end
 -----------------------------------------------------------]]
 function GM:CreateTeams()
 
-	-- Don't do this if not teambased. But if it is teambased we
-	-- create a few teams here as an example. If you're making a teambased
-	-- gamemode you should override this function in your gamemode
+   -- Don't do this if not teambased. But if it is teambased we
+   -- create a few teams here as an example. If you're making a teambased
+   -- gamemode you should override this function in your gamemode
 
-	if ( not GAMEMODE.TeamBased ) then return end
+   if ( not GAMEMODE.TeamBased ) then return end
 
-	TEAM_SURVIVORS = 1
-	team.SetUp( TEAM_SURVIVORS, "Blue Team", Color( 0, 0, 255 ) )
-	team.SetSpawnPoint( TEAM_SURVIVORS, "ai_hint" ) -- <-- This would be info_terrorist or some entity that is in your map
+   TEAM_SURVIVORS = 1
+   team.SetUp( TEAM_SURVIVORS, "Blue Team", Color( 0, 0, 255 ) )
+   team.SetSpawnPoint( TEAM_SURVIVORS, "ai_hint" ) -- <-- This would be info_terrorist or some entity that is in your map
 
-	TEAM_MONSTERS = 2
-	team.SetUp( TEAM_MONSTERS, "Orange Team", Color( 255, 150, 0 ) )
-	team.SetSpawnPoint( TEAM_MONSTERS, "sky_camera" ) -- <-- This would be info_terrorist or some entity that is in your map
+   TEAM_MONSTERS = 2
+   team.SetUp( TEAM_MONSTERS, "Orange Team", Color( 255, 150, 0 ) )
+   team.SetSpawnPoint( TEAM_MONSTERS, "sky_camera" ) -- <-- This would be info_terrorist or some entity that is in your map
 
---[[	TEAM_SPECTATORS = 3
-	team.SetUp( TEAM_SPECTATORS, "Sexy Team", Color( 255, 150, 150 ) )
-	team.SetSpawnPoint( TEAM_SPECTATORS, "info_player_start" ) -- <-- This would be info_terrorist or some entity that is in your map
-]]--
-	team.SetSpawnPoint( TEAM_SPECTATOR, "worldspawn" )
+   --[[	TEAM_SPECTATORS = 3
+       team.SetUp( TEAM_SPECTATORS, "Sexy Team", Color( 255, 150, 150 ) )
+       team.SetSpawnPoint( TEAM_SPECTATORS, "info_player_start" ) -- <-- This would be info_terrorist or some entity that is in your map
+   ]]--
+   team.SetSpawnPoint( TEAM_SPECTATOR, "worldspawn" )
 
 end
 
@@ -173,7 +173,7 @@ end
 -----------------------------------------------------------]]
 function GM:ShouldCollide( Ent1, Ent2 )
 
-	return true
+   return true
 
 end
 
@@ -185,8 +185,8 @@ end
 -----------------------------------------------------------]]
 function GM:Move( ply, mv )
 
-	if ( drive.Move( ply, mv ) ) then return true end
-	if ( player_manager.RunClass( ply, "Move", mv ) ) then return true end
+   if ( drive.Move( ply, mv ) ) then return true end
+   if ( player_manager.RunClass( ply, "Move", mv ) ) then return true end
 
 end
 
@@ -196,8 +196,8 @@ end
 -----------------------------------------------------------]]
 function GM:SetupMove( ply, mv, cmd )
 
-	if ( drive.StartMove( ply, mv, cmd ) ) then return true end
-	if ( player_manager.RunClass( ply, "StartMove", mv, cmd ) ) then return true end
+   if ( drive.StartMove( ply, mv, cmd ) ) then return true end
+   if ( player_manager.RunClass( ply, "StartMove", mv, cmd ) ) then return true end
 
 end
 
@@ -206,8 +206,8 @@ end
 -----------------------------------------------------------]]
 function GM:FinishMove( ply, mv )
 
-	if ( drive.FinishMove( ply, mv ) ) then return true end
-	if ( player_manager.RunClass( ply, "FinishMove", mv ) ) then return true end
+   if ( drive.FinishMove( ply, mv ) ) then return true end
+   if ( player_manager.RunClass( ply, "FinishMove", mv ) ) then return true end
 
 end
 
@@ -216,24 +216,24 @@ end
 -----------------------------------------------------------]]
 function GM:VehicleMove( ply, vehicle, mv )
 
-	--
-	-- On duck toggle third person view
-	--
-	if ( mv:KeyPressed( IN_DUCK ) ) then
-		vehicle:SetThirdPersonMode( not vehicle:GetThirdPersonMode() )
-	end
+   --
+   -- On duck toggle third person view
+   --
+   if ( mv:KeyPressed( IN_DUCK ) ) then
+      vehicle:SetThirdPersonMode( not vehicle:GetThirdPersonMode() )
+   end
 
-	--
-	-- Adjust the camera distance with the mouse wheel
-	--
-	local iWheel = ply:GetCurrentCommand():GetMouseWheel()
-	if ( iWheel ~= 0 ) then
-		-- The distance is a multiplier
-		-- Actual camera distance = ( renderradius + renderradius * dist )
-		-- so -1 will be zero.. clamp it there.
-		local newdist = math.Clamp( vehicle:GetCameraDistance() - iWheel * 0.03 * ( 1.1 + vehicle:GetCameraDistance() ), -1, 10 )
-		vehicle:SetCameraDistance( newdist )
-	end
+   --
+   -- Adjust the camera distance with the mouse wheel
+   --
+   local iWheel = ply:GetCurrentCommand():GetMouseWheel()
+   if ( iWheel ~= 0 ) then
+      -- The distance is a multiplier
+      -- Actual camera distance = ( renderradius + renderradius * dist )
+      -- so -1 will be zero.. clamp it there.
+      local newdist = math.Clamp( vehicle:GetCameraDistance() - iWheel * 0.03 * ( 1.1 + vehicle:GetCameraDistance() ), -1, 10 )
+      vehicle:SetCameraDistance( newdist )
+   end
 
 end
 
@@ -249,7 +249,7 @@ end
 -----------------------------------------------------------]]
 function GM:StartEntityDriving( ent, ply )
 
-	drive.Start( ply, ent )
+   drive.Start( ply, ent )
 
 end
 
@@ -258,7 +258,7 @@ end
 -----------------------------------------------------------]]
 function GM:EndEntityDriving( ent, ply )
 
-	drive.End( ply, ent )
+   drive.End( ply, ent )
 
 end
 
@@ -294,10 +294,10 @@ end
 --
 function GM:OnViewModelChanged( vm, old, new )
 
-	local ply = vm:GetOwner()
-	if ( IsValid( ply ) ) then
-		player_manager.RunClass( ply, "ViewModelChanged", vm, old, new )
-	end
+   local ply = vm:GetOwner()
+   if ( IsValid( ply ) ) then
+      player_manager.RunClass( ply, "ViewModelChanged", vm, old, new )
+   end
 
 end
 
@@ -305,5 +305,5 @@ end
 	Disable properties serverside for all non-sandbox derived gamemodes.
 -----------------------------------------------------------]]
 function GM:CanProperty( pl, property, ent )
-	return false
+   return false
 end

@@ -5,7 +5,7 @@
 	spawn menu for any reason.
 -----------------------------------------------------------]]
 function GM:SpawnMenuEnabled()
-	return false
+    return false
 end
 
 --[[---------------------------------------------------------
@@ -13,7 +13,7 @@ end
    Return false to dissallow it.
 -----------------------------------------------------------]]
 function GM:SpawnMenuOpen()
-	return true
+    return true
 end
 
 --[[---------------------------------------------------------
@@ -21,7 +21,7 @@ end
    Return false to dissallow it.
 -----------------------------------------------------------]]
 function GM:ContextMenuOpen()
-	return false
+    return false
 end
 
 --[[---------------------------------------------------------
