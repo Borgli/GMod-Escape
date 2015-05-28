@@ -16,6 +16,8 @@ include( 'gravitygun.lua' )
 include( 'player_shd.lua' )
 include( 'animations.lua' )
 include( 'player_class/player_default.lua' )
+include( 'player_class/player_survivor.lua' )
+include('util.lua')
 
 GM.Name			= "Ohm Project"
 GM.Author		= "Ohm"
@@ -150,11 +152,11 @@ function GM:CreateTeams()
 
    if ( not GAMEMODE.TeamBased ) then return end
 
-   TEAM_SURVIVORS = 1
+   --TEAM_SURVIVORS = 1
    team.SetUp( TEAM_SURVIVORS, "Survivors", Color( 0, 0, 255 ) )
    team.SetSpawnPoint( TEAM_SURVIVORS, "ai_hint" ) -- <-- This would be info_terrorist or some entity that is in your map
 
-   TEAM_MONSTERS = 2
+   --TEAM_MONSTERS = 2
    team.SetUp( TEAM_MONSTERS, "Monsters", Color( 255, 150, 0 ) )
    team.SetSpawnPoint( TEAM_MONSTERS, "sky_camera" ) -- <-- This would be info_terrorist or some entity that is in your map
 

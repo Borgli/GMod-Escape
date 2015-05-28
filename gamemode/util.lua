@@ -1,1 +1,5 @@
 
+-- Teams
+
+TEAM_SURVIVORS = 1
+TEAM_MONSTERS = 2
