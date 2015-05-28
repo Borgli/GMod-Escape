@@ -151,7 +151,7 @@ function GM:CreateTeams()
    -- gamemode you should override this function in your gamemode
 
    if (not GAMEMODE.TeamBased) then return end
-   
+
    --TEAM_SURVIVORS = 1
    team.SetUp(TEAM_SURVIVORS, "Survivors", Color(0, 0, 255))
    team.SetSpawnPoint(TEAM_SURVIVORS, "ai_hint") -- <-- This would be info_terrorist or some entity that is in your map
