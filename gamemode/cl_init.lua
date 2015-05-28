@@ -24,12 +24,18 @@ end
 -----------------------------------------------------------]]
 function GM:InitPostEntity()
 end
-
+local function PlayAmbience()
+	return Sound("he/lull-01-lullnotnull.mp3")
+end
 --[[---------------------------------------------------------
    Name: gamemode:Think()
    Desc: Called every frame
 -----------------------------------------------------------]]
 function GM:Think()
+	if not timer.Exists("ambience_timer") then
+		timer.Create("ambience_timer", 72, 0, PlayAmbience)
+		surface.PlaySound(PlayAmbience())
+	end
 end
 
 --[[---------------------------------------------------------

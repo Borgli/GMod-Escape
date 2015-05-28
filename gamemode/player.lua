@@ -1,4 +1,5 @@
 include('util.lua')
+include('shared.lua')
 
 --[[---------------------------------------------------------
 	Name: gamemode:OnPhysgunFreeze(weapon, phys, ent, player)
@@ -246,6 +247,8 @@ function GM:PlayerSpawnAsSpectator(pl)
 
 end
 
+
+
 --[[---------------------------------------------------------
 	Name: gamemode:PlayerSpawn()
 	Desc: Called when a player spawns
@@ -269,7 +272,7 @@ function GM:PlayerSpawn(pl)
 	pl:SetupHands()
 
 	if (pl:Team() == TEAM_SURVIVORS) then
-	player_manager.SetPlayerClass(pl, "player_survivor")
+	 	player_manager.SetPlayerClass(pl, "player_survivor")
 	else
 		player_manager.SetPlayerClass(pl, "player_default")
 	end
