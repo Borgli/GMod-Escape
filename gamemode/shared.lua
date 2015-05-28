@@ -12,19 +12,12 @@
 
 include('obj_player_extend.lua')
 
-<<<<<<< HEAD
-include( 'gravitygun.lua' )
-include( 'player_shd.lua' )
-include( 'animations.lua' )
-include( 'player_class/player_default.lua' )
-include( 'player_class/player_survivor.lua' )
-include('util.lua')
-=======
 include('gravitygun.lua')
 include('player_shd.lua')
 include('animations.lua')
 include('player_class/player_default.lua')
->>>>>>> origin/master
+include('player_class/player_survivor.lua')
+include('util.lua')
 
 GM.Name			= "Ohm Project"
 GM.Author		= "Ohm"
@@ -158,24 +151,14 @@ function GM:CreateTeams()
    -- gamemode you should override this function in your gamemode
 
    if (not GAMEMODE.TeamBased) then return end
-
-<<<<<<< HEAD
+   
    --TEAM_SURVIVORS = 1
-   team.SetUp( TEAM_SURVIVORS, "Survivors", Color( 0, 0, 255 ) )
-   team.SetSpawnPoint( TEAM_SURVIVORS, "ai_hint" ) -- <-- This would be info_terrorist or some entity that is in your map
-
-   --TEAM_MONSTERS = 2
-   team.SetUp( TEAM_MONSTERS, "Monsters", Color( 255, 150, 0 ) )
-   team.SetSpawnPoint( TEAM_MONSTERS, "sky_camera" ) -- <-- This would be info_terrorist or some entity that is in your map
-=======
-   TEAM_SURVIVORS = 1
    team.SetUp(TEAM_SURVIVORS, "Survivors", Color(0, 0, 255))
    team.SetSpawnPoint(TEAM_SURVIVORS, "ai_hint") -- <-- This would be info_terrorist or some entity that is in your map
 
-   TEAM_MONSTERS = 2
+   --TEAM_MONSTERS = 2
    team.SetUp(TEAM_MONSTERS, "Monsters", Color(255, 150, 0))
    team.SetSpawnPoint(TEAM_MONSTERS, "sky_camera") -- <-- This would be info_terrorist or some entity that is in your map
->>>>>>> origin/master
 
    --[[	TEAM_SPECTATORS = 3
        team.SetUp(TEAM_SPECTATORS, "Sexy Team", Color(255, 150, 150))

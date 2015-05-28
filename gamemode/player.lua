@@ -267,19 +267,14 @@ function GM:PlayerSpawn(pl)
 	pl:UnSpectate()
 
 	pl:SetupHands()
-<<<<<<< HEAD
+
 	if (pl:Team() == TEAM_SURVIVORS) then
 	player_manager.SetPlayerClass(pl, "player_survivor")
 	else
 		player_manager.SetPlayerClass(pl, "player_default")
 	end
-	player_manager.OnPlayerSpawn( pl )
-	player_manager.RunClass( pl, "Spawn" )
-=======
-
 	player_manager.OnPlayerSpawn(pl)
 	player_manager.RunClass(pl, "Spawn")
->>>>>>> origin/master
 
 	-- Call item loadout function
 	hook.Call("PlayerLoadout", GAMEMODE, pl)
