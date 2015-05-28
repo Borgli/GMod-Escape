@@ -274,7 +274,7 @@ function GM:PlayerSpawn(pl)
 	if (pl:Team() == TEAM_SURVIVORS) then
 	 	player_manager.SetPlayerClass(pl, "player_survivor")
 	else
-		player_manager.SetPlayerClass(pl, "player_default")
+		player_manager.SetPlayerClass(pl, "player_monster")
 	end
 	player_manager.OnPlayerSpawn(pl)
 	player_manager.RunClass(pl, "Spawn")
@@ -292,7 +292,6 @@ end
 	Desc: Set the player's model
 -----------------------------------------------------------]]
 function GM:PlayerSetModel(pl)
-
 
 	--local model = player_manager.TranslatePlayerModel("joker")
 	--[[local model = "models/player/bobert/joker.mdl"

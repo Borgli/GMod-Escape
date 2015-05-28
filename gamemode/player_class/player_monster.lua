@@ -68,6 +68,7 @@ function PLAYER:SetModel()
     local modelname = player_manager.TranslatePlayerModel(cl_playermodel)
     util.PrecacheModel(modelname)
     self.Player:SetModel(modelname)
+    --self.Player:SetModel(Model("models/player/bobert/joker.mdl"))
 
 end
 
