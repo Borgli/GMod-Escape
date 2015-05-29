@@ -56,19 +56,19 @@ end
 -- Ret1:
 --
 function PLAYER:Loadout()
-
-    self.Player:Give("weapon_pistol")
-    self.Player:GiveAmmo(255, "Pistol", true)
+    self.Player:StripWeapons();
+    self.Player:Give("m9k_knife");
+    --self.Player:GiveAmmo(255, "Pistol", true)
 
 end
 
 function PLAYER:SetModel()
 
-    local cl_playermodel = self.Player:GetInfo("cl_playermodel")
+    --[[local cl_playermodel = self.Player:GetInfo("cl_playermodel")
     local modelname = player_manager.TranslatePlayerModel(cl_playermodel)
     util.PrecacheModel(modelname)
-    self.Player:SetModel(modelname)
-    --self.Player:SetModel(Model("models/player/bobert/joker.mdl"))
+    self.Player:SetModel(modelname)--]]
+    self.Player:SetModel(Model("models/player/bobert/AOJoker.mdl"))
 
 end
 
