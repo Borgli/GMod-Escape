@@ -17,6 +17,7 @@ include('player_shd.lua')
 include('animations.lua')
 include('player_class/player_default.lua')
 include('player_class/player_survivor.lua')
+include('player_class/player_monster.lua')
 include('util.lua')
 
 GM.Name			= "Ohm Project"
@@ -24,6 +25,10 @@ GM.Author		= "Ohm"
 GM.Email		= "ohmos@ohm.ohm"
 GM.Website		= "www.ohm.ohm"
 GM.TeamBased	= true
+
+TEAM_SURVIVORS = 1
+TEAM_MONSTERS = 2
+
 
 --[[---------------------------------------------------------
    Name: gamemode:PlayerHurt()

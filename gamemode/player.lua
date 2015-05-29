@@ -269,7 +269,7 @@ function GM:PlayerSpawn(pl)
 	-- Stop observer mode
 	pl:UnSpectate()
 
-	pl:SetupHands()
+
 
 	if (pl:Team() == TEAM_SURVIVORS) then
 	 	player_manager.SetPlayerClass(pl, "player_survivor")
@@ -284,7 +284,7 @@ function GM:PlayerSpawn(pl)
 
 	-- Set player model
 	hook.Call("PlayerSetModel", GAMEMODE, pl)
-
+	pl:SetupHands()
 end
 
 --[[---------------------------------------------------------

@@ -1,9 +1,29 @@
+AddCSLuaFile("cl_init.lua")
+AddCSLuaFile("shared.lua")
+AddCSLuaFile("cl_scoreboard.lua")
+AddCSLuaFile("cl_targetid.lua")
+AddCSLuaFile("cl_hudpickup.lua")
+AddCSLuaFile("cl_spawnmenu.lua")
+AddCSLuaFile("cl_deathnotice.lua")
+AddCSLuaFile("cl_pickteam.lua")
+AddCSLuaFile("cl_voice.lua")
 
-include('shared.lua')
-include('player.lua')
-include('npc.lua')
-include('variable_edit.lua')
+AddCSLuaFile("obj_player_extend.lua")
+
+AddCSLuaFile("gravitygun.lua")
+AddCSLuaFile("player_shd.lua")
+AddCSLuaFile("animations.lua")
+AddCSLuaFile("player_class/player_default.lua")
+AddCSLuaFile("player_class/player_survivor.lua")
+AddCSLuaFile("player_class/player_monster.lua")
+AddCSLuaFile("util.lua")
+
+include("shared.lua")
+include("player.lua")
+include("npc.lua")
+include("variable_edit.lua")
 include("resources.lua")
+
 
 GM.PlayerSpawnTime = {}
 
@@ -12,6 +32,7 @@ GM.PlayerSpawnTime = {}
    Desc: Called immediately after starting the gamemode
 -----------------------------------------------------------]]
 function GM:Initialize()
+	hook.Call()
 end
 
 --[[---------------------------------------------------------
