@@ -9,7 +9,6 @@ AddCSLuaFile("cl_pickteam.lua")
 AddCSLuaFile("cl_voice.lua")
 
 AddCSLuaFile("obj_player_extend.lua")
-
 AddCSLuaFile("gravitygun.lua")
 AddCSLuaFile("player_shd.lua")
 AddCSLuaFile("animations.lua")
