@@ -111,7 +111,8 @@ function GM:PlayerNoClip(pl, on)
 	if (pl:IsAdmin()) then return true end
 
 	-- Don't if it's not.
-	return false
+	-- return false
+	return true
 
 end
 

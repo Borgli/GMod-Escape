@@ -57,8 +57,8 @@ end
 --
 function PLAYER:Loadout()
 
-    self.Player:Give("weapon_pistol")
-    self.Player:GiveAmmo(255, "Pistol", true)
+    self.Player:StripWeapons()
+    self.Player:Give("weapon_flashlight")
 
 end
 
