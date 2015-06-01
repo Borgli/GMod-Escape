@@ -1,4 +1,4 @@
--Inspired by Zoey's flashlight.
+--Inspired by Zoey's flashlight.
 --This SWEP started out as a small modification of Devilsson2010's FlashlightV2.
 --Eventually, I completely rewrote the weapon, recreating the function of
 --Zoey's now defunct Zombie Master flashlight.
@@ -30,7 +30,7 @@ end
 SWEP.Author = "SkyNinja"
 SWEP.Contact = ""
 SWEP.Purpose = ""
-SWEP.Instructions = "Primary fire attacks. Secondary fire toggles the light."
+SWEP.Instructions = "Secondary fire toggles the light."
 
 SWEP.Spawnable = true
 SWEP.AdminSpawnable = true
@@ -38,13 +38,13 @@ SWEP.UseHands = true
 
 SWEP.ViewModel = "models/weapons/c_flashlight_zm.mdl"
 SWEP.WorldModel = "models/weapons/w_flashlight_zm.mdl"
-
+--[[
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
 SWEP.Primary.Damage = 10
 SWEP.Primary.Automatic = false
 SWEP.Primary.Ammo = "none"
-
+--]]
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false 
@@ -96,7 +96,7 @@ return true
 end
 	
 function SWEP:PrimaryAttack()
-	self.Owner:SetAnimation( PLAYER_ATTACK1 )
+	--[[self.Owner:SetAnimation( PLAYER_ATTACK1 )
 	if ( !SERVER ) then return end
 	
 	-- Apparently we need this because it won't work right in multiplayer.
@@ -155,7 +155,7 @@ function SWEP:PrimaryAttack()
 			tr.Entity:TakeDamageInfo( dmginfo )
 		end
 	end )
-	self:SetNextPrimaryFire( CurTime() + 1 )
+	self:SetNextPrimaryFire( CurTime() + 1 )]]--
 end
 
 function SWEP:SecondaryAttack()

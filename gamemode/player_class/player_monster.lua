@@ -8,12 +8,12 @@ local PLAYER = {}
 PLAYER.DisplayName			= "Monster"
 
 PLAYER.WalkSpeed			= 200		-- How fast to move when not running
-PLAYER.RunSpeed				= 600		-- How fast to move when running
+PLAYER.RunSpeed				= 300		-- How fast to move when running
 PLAYER.CrouchedWalkSpeed	= 0.3		-- Multiply move speed by this when crouching
 PLAYER.DuckSpeed			= 0.3		-- How fast to go from not ducking, to ducking
 PLAYER.UnDuckSpeed			= 0.3		-- How fast to go from ducking, to not ducking
 PLAYER.JumpPower			= 200		-- How powerful our jump should be
-PLAYER.CanUseFlashlight		= true		-- Can we use the flashlight
+PLAYER.CanUseFlashlight		= false		-- Can we use the flashlight
 PLAYER.MaxHealth			= 200		-- Max health we can have
 PLAYER.StartHealth			= 200		-- How much health we start with
 PLAYER.StartArmor			= 0			-- How much armour we start with

@@ -1,4 +1,4 @@
-givelight_cv = CreateConVar( "sv_givelight", "1", { FCVAR_ARCHIVE, FCVAR_DONTRECORD, FCVAR_REPLICATED }, "Toggles spawing with the flashlight." )
+givelight_cv = CreateConVar( "sv_givelight", "0", { FCVAR_ARCHIVE, FCVAR_DONTRECORD, FCVAR_REPLICATED }, "Toggles spawing with the flashlight." )
 
 shl_convar = CreateConVar( "sv_shoulderlight", "0", { FCVAR_ARCHIVE, FCVAR_DONTRECORD, FCVAR_REPLICATED }, "Toggles drawing the flashlight on pressing the flashlight bind." )
 

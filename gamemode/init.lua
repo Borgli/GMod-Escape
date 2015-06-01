@@ -23,7 +23,6 @@ include("npc.lua")
 include("variable_edit.lua")
 include("resources.lua")
 
-
 GM.PlayerSpawnTime = {}
 
 --[[---------------------------------------------------------
@@ -62,6 +61,8 @@ end
 function GM:DoPlayerDeath(ply, attacker, dmginfo)
 
 	ply:CreateRagdoll()
+	local ragdoll = ply:GetRagdollEntity();
+	ragdoll:EmitSound(Sound("wilhelm.wav"));
 
 	ply:AddDeaths(1)
 

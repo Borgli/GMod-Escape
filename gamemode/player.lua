@@ -546,7 +546,7 @@ end
 	Desc: Return true to not play the default sounds
 -----------------------------------------------------------]]
 function GM:PlayerDeathSound()
-	return false
+	return true
 end
 
 --[[---------------------------------------------------------
