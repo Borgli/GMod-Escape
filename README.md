@@ -15,4 +15,11 @@ Clone the repo into `\Steam\steamapps\common\GarrysMod\garrysmod\gamemodes\`
 - Fix flashlight world model and primary attack
 - Add survivor player models.
 - Separate from workshop so we don't have to download everything from a pack when we use a little part.
--
+- Design monster
+- Add monster client overlay (effects)
+- Make round system.
+- Fix spawn. (Die -> spectator mode until next round. Leave a ragdoll.)
+- Make map key entities and make them work with locked doors.
+
+## Maps:
+- slender_infirmary: http://steamcommunity.com/sharedfiles/filedetails/?id=188570584
