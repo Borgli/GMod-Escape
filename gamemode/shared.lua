@@ -90,7 +90,8 @@ end
    Return true if this player should take damage from this attacker
 -----------------------------------------------------------]]
 function GM:PlayerShouldTakeDamage(ply, attacker)
-   if (attacker:IsValid() and ply:IsValid() and ply:Team() == attacker:Team()) then return false
+   if (IsEntity(attacker)) then return true end
+   if (attacker:IsValid() and ply:Team() == attacker:Team()) then return false
    else return true
    end
 end
