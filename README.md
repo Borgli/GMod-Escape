@@ -23,3 +23,10 @@ Clone the repo into `\Steam\steamapps\common\GarrysMod\garrysmod\gamemodes\`
 
 ## Maps:
 - slender_infirmary: http://steamcommunity.com/sharedfiles/filedetails/?id=188570584
+
+## Monsters
+
+- Robert (placeholder)
+	Runs fast while invisible, but slower than normal while visible. 30 second cooldown.
+	Cannot attack while invisible. (Disabled)
+	Footstep-noise while invisible.
