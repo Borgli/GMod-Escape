@@ -275,6 +275,7 @@ function GM:PlayerSpawn(pl)
 	 	player_manager.SetPlayerClass(pl, "player_survivor")
 	else
 		player_manager.SetPlayerClass(pl, "player_monster")
+		pl:GodEnable()
 	end
 	player_manager.OnPlayerSpawn(pl)
 	player_manager.RunClass(pl, "Spawn")
