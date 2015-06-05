@@ -280,6 +280,7 @@ function GM:PlayerSpawn(pl)
 	player_manager.OnPlayerSpawn(pl)
 	player_manager.RunClass(pl, "Spawn")
 
+	hook.Call("RenderScreenspaceEffects", GAMEMODE)
 	-- Call item loadout function
 	hook.Call("PlayerLoadout", GAMEMODE, pl)
 

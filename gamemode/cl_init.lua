@@ -114,6 +114,20 @@ end
    Desc: Bloom etc should be drawn here (or using this hook)
 -----------------------------------------------------------]]
 function GM:RenderScreenspaceEffects()
+	if (IsValid(LocalPlayer()) and player_manager.GetPlayerClass(LocalPlayer()) == "player_monster") then
+		local colorPresets = {
+			[ "$pp_colour_addr" ] 		= -1,
+			[ "$pp_colour_addg" ] 		= -0.35,
+			[ "$pp_colour_addb" ] 		= -1,
+			[ "$pp_colour_brightness" ] = 0.8,
+			[ "$pp_colour_contrast" ]	= 1.1,
+			[ "$pp_colour_colour" ] 	= 0,
+			[ "$pp_colour_mulr" ] 		= 0,
+			[ "$pp_colour_mulg" ] 		= 0.028,
+			[ "$pp_colour_mulb" ] 		= 0
+		}
+		DrawColorModify(colorPresets)
+	end
 end
 
 --[[---------------------------------------------------------
