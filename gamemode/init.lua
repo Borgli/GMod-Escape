@@ -17,7 +17,8 @@ AddCSLuaFile("player_class/player_survivor.lua")
 AddCSLuaFile("player_class/player_monster.lua")
 AddCSLuaFile("util.lua")
 
-AddCSLuaFile("flashlight_init.lua")
+-- Disabled flashlight because it's bugged.
+--AddCSLuaFile("flashlight_init.lua")
 
 include("shared.lua")
 include("player.lua")
