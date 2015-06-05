@@ -3,7 +3,6 @@
 --Eventually, I completely rewrote the weapon, recreating the function of
 --Zoey's now defunct Zombie Master flashlight.
 
-
 AddCSLuaFile ()
 
 if ( SERVER ) then
@@ -67,7 +66,7 @@ end
 function SWEP:Reload() 
 	if self.SetNextReload > CurTime() then return end
 	local flrefresh = self.Owner:GetInfoNum( "cl_flashlight_allow_refresh", 0 )
-	if flrefresh != 0 then
+	if flrefresh ~= 0 then
 		if ( SERVER ) then
 			SafeRemoveEntity ( self.projectedlight )
 			if IsValid( self.projectedlight ) then
@@ -97,7 +96,7 @@ end
 	
 function SWEP:PrimaryAttack()
 	--[[self.Owner:SetAnimation( PLAYER_ATTACK1 )
-	if ( !SERVER ) then return end
+	if ( not SERVER ) then return end
 	
 	-- Apparently we need this because it won't work right in multiplayer.
 	-- I assume that refers to the timer, but I have no idea.
@@ -105,32 +104,32 @@ function SWEP:PrimaryAttack()
 	vm:ResetSequence( vm:LookupSequence( "idle01" ) )
 	
 	timer.Simple( 0, function()
-		if ( !IsValid( self ) || !IsValid( self.Owner ) || !self.Owner:GetActiveWeapon() || self.Owner:GetActiveWeapon() != self ) then return end
+		if ( not IsValid( self ) or not IsValid( self.Owner ) or not self.Owner:GetActiveWeapon() or self.Owner:GetActiveWeapon() ~= self ) then return end
 		
 		local vm = self.Owner:GetViewModel()
 		vm:ResetSequence( vm:LookupSequence( "hitcenter1" ) )
 
 		timer.Simple( (vm:SequenceDuration() - 0.2), function()
-			if ( !IsValid( self ) || !IsValid( self.Owner ) || !self.Owner:GetActiveWeapon() || self.Owner:GetActiveWeapon() != self ) then return end
+			if ( not IsValid( self ) or not IsValid( self.Owner ) or not self.Owner:GetActiveWeapon() or self.Owner:GetActiveWeapon() ~= self ) then return end
 			local vm = self.Owner:GetViewModel()
 			vm:SetSequence( vm:LookupSequence( "idle01" ) )
 		end )
 	end )
 	
 	timer.Simple( 0.39, function()
-		if ( !IsValid( self ) || !IsValid( self.Owner ) || !self.Owner:GetActiveWeapon() || self.Owner:GetActiveWeapon() != self ) then return end
+		if ( not IsValid( self ) or not IsValid( self.Owner ) or not self.Owner:GetActiveWeapon() or self.Owner:GetActiveWeapon() ~= self ) then return end
 		self.Owner:EmitSound( SwingSound )
 	end )
 	
 	timer.Simple( 0.45, function()
-		if ( !IsValid( self ) || !IsValid( self.Owner ) || !self.Owner:GetActiveWeapon() || self.Owner:GetActiveWeapon() != self ) then return end
+		if ( not IsValid( self ) or not IsValid( self.Owner ) or not self.Owner:GetActiveWeapon() or self.Owner:GetActiveWeapon() ~= self ) then return end
 		local tr = util.TraceLine( {
 			start = self.Owner:GetShootPos(),
 			endpos = self.Owner:GetShootPos() + self.Owner:GetAimVector() * 64,
 			filter = self.Owner
 		} )
 
-		if ( !IsValid( tr.Entity ) ) then 
+		if ( not IsValid( tr.Entity ) ) then 
 			tr = util.TraceHull( {
 				start = self.Owner:GetShootPos(),
 				endpos = self.Owner:GetShootPos() + self.Owner:GetAimVector() * 64,
@@ -149,7 +148,7 @@ function SWEP:PrimaryAttack()
 			dmginfo:SetDamageType( 128 )
 			dmginfo:SetInflictor( self )
 			local attacker = self.Owner
-			if ( !IsValid( attacker ) ) then attacker = self end
+			if ( not IsValid( attacker ) ) then attacker = self end
 			dmginfo:SetAttacker( attacker )
 
 			tr.Entity:TakeDamageInfo( dmginfo )
@@ -159,8 +158,8 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:SecondaryAttack()
-	if ( !IsValid( self ) || !IsValid( self.Owner ) || !self.Owner:GetActiveWeapon() || self.Owner:GetActiveWeapon() != self || !SERVER ) then return end
-	self.Active = !self.Active
+	if ( not IsValid( self ) or not IsValid( self.Owner ) or not self.Owner:GetActiveWeapon() or self.Owner:GetActiveWeapon() ~= self or not SERVER ) then return end
+	self.Active = not self.Active
 	if ( self.Active ) then
 		self.projectedlight:Fire("TurnOn")
 	else
@@ -173,13 +172,13 @@ function SWEP:SecondaryAttack()
 	local vm = self.Owner:GetViewModel()
 	vm:ResetSequence( vm:LookupSequence( "idle01" ) )
 	timer.Simple( 0, function()
-		if ( !IsValid( self ) || !IsValid( self.Owner ) || !self.Owner:GetActiveWeapon() || self.Owner:GetActiveWeapon() != self ) then return end
+		if ( not IsValid( self ) or not IsValid( self.Owner ) or not self.Owner:GetActiveWeapon() or self.Owner:GetActiveWeapon() ~= self ) then return end
 		
 		local vm = self.Owner:GetViewModel()
 		vm:ResetSequence( vm:LookupSequence( "trigger" ) )
 
 		timer.Simple( vm:SequenceDuration(), function()
-			if ( !IsValid( self ) || !IsValid( self.Owner ) || !self.Owner:GetActiveWeapon() || self.Owner:GetActiveWeapon() != self ) then return end
+			if ( not IsValid( self ) or not IsValid( self.Owner ) or not self.Owner:GetActiveWeapon() or self.Owner:GetActiveWeapon() ~= self ) then return end
 			local vm = self.Owner:GetViewModel()
 			vm:SetSequence( vm:LookupSequence( "idle01" ) )
 		end )
@@ -216,8 +215,9 @@ function SWEP:BuildLight( delay )
 	local r = math.Clamp( flashlight_r, 0, 255 )
 	local g = math.Clamp( flashlight_g, 0, 255 )
 	local b = math.Clamp( flashlight_b, 0, 255 )
+	self.Active = true
 	timer.Simple( delay, function()
-		if ( !IsValid( self ) || !IsValid( self.Owner ) || !self.Owner:GetActiveWeapon() || self.Owner:GetActiveWeapon() != self || !SERVER ) then return end
+		if (not IsValid(self) or not IsValid(self.Owner) or not self.Owner:GetActiveWeapon() or self.Owner:GetActiveWeapon() ~= self or not SERVER) then return end
 		self.projectedlight = ents.Create( "env_projectedtexture" )
 		self.projectedlight:SetParent( vm )
 		self.projectedlight:SetPos( self.Owner:GetShootPos() )
@@ -232,7 +232,5 @@ function SWEP:BuildLight( delay )
 		self.projectedlight:Fire("setparentattachment", "light", 0.01)
 		self.Owner:EmitSound( SwitchSound )
 	end )
-	self.Active = true
 end
 
-"

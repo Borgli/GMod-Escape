@@ -9,6 +9,8 @@ resource.AddWorkshop("244540803") -- Customizable Flashlight: http://steamcommun
 resource.AddFile("sound/wilhelm.wav") -- Wilhelm Death Sound
 resource.AddFile("sound/he/lull-01-lullnotnull.mp3") -- Creepy ambience
 resource.AddFile("models/weapons/c_flashlight_zm.mdl")
+resource.AddFile("models/weapons/w_flashlight_zm.mdl")
+
 
 --[[function AddDir(dir)
 
