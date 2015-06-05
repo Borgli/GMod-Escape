@@ -4,12 +4,28 @@ resource.AddWorkshop("400762901") -- Arkham Origins Joker NPC/Playermodel: http:
 resource.AddWorkshop("448581592") -- Han Solo and Chewbacca Playermodels: http://steamcommunity.com/sharedfiles/filedetails/?id=448581592
 resource.AddWorkshop("112806637") -- GMod Legs: http://steamcommunity.com/sharedfiles/filedetails/?id=112806637
 resource.AddWorkshop("144982052") -- M9K Specialties: http://steamcommunity.com/sharedfiles/filedetails/?id=144982052
-resource.AddWorkshop("244540803") -- Customizable Flashlight: http://steamcommunity.com/sharedfiles/filedetails/?id=244540803
+--resource.AddWorkshop("244540803") -- Customizable Flashlight: http://steamcommunity.com/sharedfiles/filedetails/?id=244540803
 --resource.AddFile("models/player/bobert/joker.mdl")
 resource.AddFile("sound/wilhelm.wav") -- Wilhelm Death Sound
 resource.AddFile("sound/he/lull-01-lullnotnull.mp3") -- Creepy ambience
+
 resource.AddFile("models/weapons/c_flashlight_zm.mdl")
 resource.AddFile("models/weapons/w_flashlight_zm.mdl")
+
+resource.AddFile("materials/effects/flashlight/flashlight001_l4d2.vmt")
+resource.AddFile("materials/effects/flashlight/flashlight001_ronster.vmt")
+resource.AddFile("materials/effects/flashlight/flashlight_horrible.vmt")
+resource.AddFile("materials/effects/flashlight/flashlight_trinity.vmt")
+
+resource.AddFile("materials/weapons/weapon_flashlight.vmt")
+resource.AddFile("materials/weapons/weapon_flashlight_kill.vmt")
+
+resource.AddFile("materials/models/weapons/flashlight_zm/flashlight_diffuse.vmt")
+resource.AddFile("materials/models/weapons/flashlight_zm/flashlight_diffuse_normal.vtf")
+
+resource.AddFile("materials/effects/flashlight/flashlight_trinity.vmt")
+resource.AddFile("materials/effects/flashlight/flashlight_trinity.vmt")
+
 
 
 --[[function AddDir(dir)

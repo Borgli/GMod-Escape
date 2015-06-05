@@ -17,8 +17,8 @@ if ( CLIENT ) then
 	SWEP.SlotPos = 7
 	SWEP.DrawAmmo = false
 	SWEP.DrawCrosshair = false
-	SWEP.WeaponIcon = surface.GetTextureID("weapons/weapon_flashlight")
-	killicon.Add( "weapon_flashlight", "weapons/weapon_flashlight_kill", Color( 255, 80, 0, 255 ) ) 
+	SWEP.WeaponIcon = surface.GetTextureID("materials/weapons/weapon_flashlight")
+	killicon.Add( "weapon_flashlight", "materials/weapons/weapon_flashlight_kill", Color( 255, 80, 0, 255 ) )
 	function SWEP:DrawWeaponSelection(x, y, wide, tall, alpha)
 		surface.SetDrawColor( 355, 340, 0, 255 )
 		surface.SetTexture( self.WeaponIcon )
@@ -35,15 +35,15 @@ SWEP.Spawnable = true
 SWEP.AdminSpawnable = true
 SWEP.UseHands = true
 
-SWEP.ViewModel = "models/weapons/c_flashlight_zm.mdl"
-SWEP.WorldModel = "models/weapons/w_flashlight_zm.mdl"
---[[
+SWEP.ViewModel = Model("weapons/c_flashlight_zm.mdl")
+SWEP.WorldModel = Model("weapons/w_flashlight_zm.mdl")
+
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
-SWEP.Primary.Damage = 10
+--SWEP.Primary.Damage = 10
 SWEP.Primary.Automatic = false
 SWEP.Primary.Ammo = "none"
---]]
+
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false 
@@ -53,13 +53,13 @@ SWEP.Active = false
 
 SWEP.SetNextReload = CurTime()
 	
-local SwingSound = Sound( "weapons/slam/throw.wav" )
-local HitSound = Sound( "Computer.ImpactHard" )
+--local SwingSound = Sound( "weapons/slam/throw.wav" )
+--local HitSound = Sound( "Computer.ImpactHard" )
 local SwitchSound = Sound( "HL2Player.FlashLightOn" )
 
 function SWEP:Precache()
-	util.PrecacheSound( "weapons/slam/throw.wav" )
-	util.PrecacheSound( "Computer.ImpactHard" )
+--	util.PrecacheSound( "weapons/slam/throw.wav" )
+--	util.PrecacheSound( "Computer.ImpactHard" )
 	util.PrecacheSound( "HL2Player.FlashLightOn" )
 end
 
@@ -154,7 +154,7 @@ function SWEP:PrimaryAttack()
 			tr.Entity:TakeDamageInfo( dmginfo )
 		end
 	end )
-	self:SetNextPrimaryFire( CurTime() + 1 )]]--
+	self:SetNextPrimaryFire( CurTime() + 1 )--]]
 end
 
 function SWEP:SecondaryAttack()

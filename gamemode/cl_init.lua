@@ -8,6 +8,8 @@ include('cl_pickteam.lua')
 include('cl_voice.lua')
 include('shared.lua')
 
+include("flashlight_init.lua")
+
 --[[---------------------------------------------------------
    Name: gamemode:Initialize()
    Desc: Called immediately after starting the gamemode
