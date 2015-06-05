@@ -253,7 +253,7 @@ function GM:PlayerSpawnAsSpectator(pl)
 	end
 
 	pl:SetTeam(TEAM_SPECTATOR)
-	pl:Spectate(OBS_MODE_ROAMING)
+	pl:Spectate(OBS_MODE_CHASE)
 
 end
 
@@ -720,7 +720,7 @@ function GM:NEW_ROUND( )
     --timer.Create( Initialize, 1, 1 , function  ) 
 
     for k, v in pairs( player.GetAll( ) ) do
-       gamemode.Call ("PlayerSpawn", v) --??????
+       gamemode.Call ("PlayerSpawn", v)
         table.insert( ACTIVE_PLAYERS, v );
     end
 end
@@ -754,13 +754,13 @@ function GM:GAME_OVER( )
 	PrintMessage(HUD_PRINTCENTER, "Game over!")
     for k, v in pairs( player.GetAll( ) ) do
         v:SetTeam( TEAM_SPECTATOR )
-        v:Spectate( OBS_MODE_ROAMING ) -- when you spawn them call UnSpectate( ) on them
+        v:Spectate( OBS_MODE_CHASE ) -- when you spawn them call UnSpectate( ) on them
     end
 
     ACTIVE_PLAYERS = { }
 
 
-    timer.Simple( 30, function( )
+    timer.Simple( 15, function( )
         hook.Call( "NEW_ROUND", GAMEMODE )
     end )
 
