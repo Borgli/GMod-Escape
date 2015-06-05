@@ -89,6 +89,9 @@ end
 	Desc: Player has disconnected from the server.
 -----------------------------------------------------------]]
 function GM:PlayerDisconnected(player)
+table.remove( ACTIVE_PLAYERS, table.KeyFromValue( ACTIVE_PLAYERS, Player ) );
+
+DetectEndRound( );
 end
 
 --[[---------------------------------------------------------
@@ -108,13 +111,14 @@ end
 	Name: gamemode:PlayerDeathThink(player)
 	Desc: Called when the player is waiting to respawn
 -----------------------------------------------------------]]
-function GM:PlayerDeathThink(pl)
+function GM:PlayerDeathThink(pl, newteam)
 
-	if (pl.NextSpawnTime and pl.NextSpawnTime > CurTime()) then return end
+	if (pl.NextSpawnTime and pl.NextSpawnTime > CurTime()) then return
+	end
 
 	if (pl:KeyPressed(IN_ATTACK) or pl:KeyPressed(IN_ATTACK2) or pl:KeyPressed(IN_JUMP)) then
 
-		pl:Spawn()
+		(pl.Spawn)
 
 	end
 
@@ -154,8 +158,8 @@ util.AddNetworkString("PlayerKilledByPlayer")
 function GM:PlayerDeath(ply, inflictor, attacker)
 
 	-- Don't spawn for at least 2 seconds
-	ply.NextSpawnTime = CurTime() + 2
-	ply.DeathTime = CurTime()
+	--ply.NextSpawnTime = CurTime() + 2
+	--ply.DeathTime = CurTime()
 
 	if (IsValid(attacker) and attacker:GetClass() == "trigger_hurt") then attacker = ply end
 
@@ -183,7 +187,7 @@ function GM:PlayerDeath(ply, inflictor, attacker)
 		net.WriteEntity(ply)
 		net.Broadcast()
 
-		MsgAll(attacker:Nick() .. " suicidednot \n")
+		MsgAll(attacker:Nick() .. " suicided \n")
 
 		return end
 
@@ -211,21 +215,28 @@ function GM:PlayerDeath(ply, inflictor, attacker)
 
 	MsgAll(ply:Nick() .. " was killed by " .. attacker:GetClass() .. "\n")
 
+	table.remove( ACTIVE_PLAYERS, table.KeyFromValue( ACTIVE_PLAYERS, victim ) );
+
+DetectEndRound( );
+ 
+ end
+
 end
 
 --[[---------------------------------------------------------
 	Name: gamemode:PlayerInitialSpawn()
 	Desc: Called just before the player's first spawn
 -----------------------------------------------------------]]
-function GM:PlayerInitialSpawn(pl)
 
-	pl:SetTeam(TEAM_UNASSIGNED)
+function GM:PlayerInitialSpawn(ply)
+    local teamn = math.random(1, 2) -- Takes a random number between 1 or 2
+    math.randomseed(os.time()) --This makes sure the teams will always be random
+ 
+    if team.NumPlayers(2) >= team.NumPlayers(1) and teamn == 2 then
+    ply:SetTeam(1)
+    end
+ 
 
-	if (GAMEMODE.TeamBased) then
-		pl:ConCommand("gm_showteam")
-	end
-
-end
 
 --[[---------------------------------------------------------
 	Name: gamemode:PlayerSpawnAsSpectator()
@@ -607,7 +618,7 @@ function GM:PlayerCanJoinTeam(ply, teamid)
 	local TimeBetweenSwitches = GAMEMODE.SecondsBetweenTeamSwitches or 10
 	if (ply.LastTeamSwitch and RealTime()-ply.LastTeamSwitch < TimeBetweenSwitches) then
 		ply.LastTeamSwitch = ply.LastTeamSwitch + 1
-		ply:ChatPrint(Format("Please wait %i more seconds before trying to change team again", (TimeBetweenSwitches - (RealTime() - ply.LastTeamSwitch)) + 1))
+		ply:ChatPrint(Format("Please wait %i more seconds before trying to change team again", (TimeBetweenSwitches - (RealTime() - ply.LastTeamSwitch) + 1 )))
 		return false
 	end
 
@@ -698,6 +709,54 @@ function GM:OnPlayerChangedTeam(ply, oldteam, newteam)
 	PrintMessage(HUD_PRINTTALK, Format("%s joined '%s'", ply:Nick(), team.GetName(newteam)))
 
 end
+    -- Creates a new round
+
+function GM:NEW_ROUND( )
+    if ( not ACTIVE_PLAYERS ) then ACTIVE_PLAYERS = { }; end
+
+    --timer.Create( Initialize, 1, 1 , function  ) 
+
+    for k, v in pairs( player.GetAll( ) ) do
+       gamemode.Call ("PlayerInitialSpawn") --?????? 
+        table.insert( ACTIVE_PLAYERS, Player );
+    end
+end
+
+--Detects if the round is over or not
+
+function DetectEndRound( )
+    local _team1count = 0;
+    local _team2count = 0;
+    for k, v in pairs( ACTIVE_PLAYERS ) do
+        if ( !IsValid( v ) ) then
+            table.remove( ACTIVE_PLAYERS, k );
+        else
+            if ( v:Team( ) == 1 ) then
+                _team1count = _team1count + 1;
+            else
+                _team2count = _team2count + 1;
+            end
+        end
+    end
+
+    if ( table.Count( ACTIVE_PLAYERS ) < 2 || _team1count == 0 || _team2count == 0 ) then hook.Call( "GAME_OVER", GAMEMODE ) end;
+end
+
+-- Ends the round and initializes a new one.
+
+function GM:GAME_OVER( )
+    for k, v in pairs( player.GetAll( ) ) do
+        v:SetTeam( TEAM_SPECTATOR )
+        v:Spectate( OBS_MODE_ROAMING ) -- when you spawn them call UnSpectate( ) on them
+    end
+
+    ACTIVE_PLAYERS = { }
+
+    timer.Simple( 30, function( )
+        hook.Call( "NEW_ROUND", GAMEMODE )
+    end )
+
+
 
 --[[---------------------------------------------------------
 	Name: gamemode:PlayerSpray()

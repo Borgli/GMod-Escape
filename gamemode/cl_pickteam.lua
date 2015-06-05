@@ -3,6 +3,7 @@
    Name: gamemode:ShowTeam()
    Desc:
 -----------------------------------------------------------]]
+--[[--------------------------------------------------------
 function GM:ShowTeam()
 
 	if (IsValid(self.TeamSelectFrame)) then return end
@@ -50,11 +51,16 @@ function GM:ShowTeam()
 	self.TeamSelectFrame:SetKeyboardInputEnabled(false)
 
 end
+-----------------------------------------------------]]
+
 
 --[[---------------------------------------------------------
    Name: gamemode:HideTeam()
    Desc:
 -----------------------------------------------------------]]
+
+
+--[[----------------------------------------------
 function GM:HideTeam()
 
 	if (IsValid(self.TeamSelectFrame)) then
@@ -63,3 +69,4 @@ function GM:HideTeam()
 	end
 
 end
+-------------------------------]]

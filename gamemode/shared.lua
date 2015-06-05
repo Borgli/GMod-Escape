@@ -159,11 +159,11 @@ function GM:CreateTeams()
    if (not GAMEMODE.TeamBased) then return end
 
    --TEAM_SURVIVORS = 1
-   team.SetUp(TEAM_SURVIVORS, "Survivors", Color(0, 0, 255))
+   team.SetUp(1, "Survivors", Color(0, 0, 255))
    team.SetSpawnPoint(TEAM_SURVIVORS, "ai_hint") -- <-- This would be info_terrorist or some entity that is in your map
 
    --TEAM_MONSTERS = 2
-   team.SetUp(TEAM_MONSTERS, "Monsters", Color(255, 150, 0))
+   team.SetUp(2, "Monsters", Color(255, 150, 0))
    team.SetSpawnPoint(TEAM_MONSTERS, "sky_camera") -- <-- This would be info_terrorist or some entity that is in your map
 
    --[[	TEAM_SPECTATORS = 3
