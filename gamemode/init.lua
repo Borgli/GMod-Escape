@@ -41,6 +41,7 @@ end
    Desc: Called as soon as all map entities have been spawned
 -----------------------------------------------------------]]
 function GM:InitPostEntity()
+	--hook.Call( "NEW_ROUND", GAMEMODE )
 end
 
 --[[---------------------------------------------------------
@@ -78,6 +79,8 @@ function GM:DoPlayerDeath(ply, attacker, dmginfo)
 		end
 
 	end
+
+	DetectEndRound();
 
 end
 

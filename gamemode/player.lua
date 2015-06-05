@@ -89,9 +89,9 @@ end
 	Desc: Player has disconnected from the server.
 -----------------------------------------------------------]]
 function GM:PlayerDisconnected(player)
-table.remove( ACTIVE_PLAYERS, table.KeyFromValue( ACTIVE_PLAYERS, Player ) );
+table.remove( ACTIVE_PLAYERS, table.KeyFromValue( ACTIVE_PLAYERS, player ) );
 
-DetectEndRound( );
+DetectEndRound();
 end
 
 --[[---------------------------------------------------------
@@ -215,7 +215,7 @@ function GM:PlayerDeath(ply, inflictor, attacker)
 
 	MsgAll(ply:Nick() .. " was killed by " .. attacker:GetClass() .. "\n")
 
-	table.remove( ACTIVE_PLAYERS, table.KeyFromValue( ACTIVE_PLAYERS, victim ) );
+	table.remove( ACTIVE_PLAYERS, table.KeyFromValue( ACTIVE_PLAYERS, ply ) );
 
 DetectEndRound( );
 
@@ -289,6 +289,9 @@ function GM:PlayerSpawn(pl)
 	end
 	player_manager.OnPlayerSpawn(pl)
 	player_manager.RunClass(pl, "Spawn")
+
+	if (not IsValid(ACTIVE_PLAYERS)) then ACTIVE_PLAYERS = {} end
+	table.insert(ACTIVE_PLAYERS, pl)
 
 	hook.Call("RenderScreenspaceEffects", GAMEMODE)
 	-- Call item loadout function
@@ -711,13 +714,14 @@ end
     -- Creates a new round
 
 function GM:NEW_ROUND( )
+	PrintMessage(HUD_PRINTCENTER, "New round!")
     if ( not ACTIVE_PLAYERS ) then ACTIVE_PLAYERS = { }; end
 
     --timer.Create( Initialize, 1, 1 , function  ) 
 
     for k, v in pairs( player.GetAll( ) ) do
-       gamemode.Call ("PlayerInitialSpawn") --?????? 
-        table.insert( ACTIVE_PLAYERS, Player );
+       gamemode.Call ("PlayerSpawn", v) --??????
+        table.insert( ACTIVE_PLAYERS, v );
     end
 end
 
@@ -726,9 +730,12 @@ end
 function DetectEndRound( )
     local _team1count = 0;
     local _team2count = 0;
+	if (not IsValid(ACTIVE_PLAYERS)) then
+		ACTIVE_PLAYERS = {}
+	end
     for k, v in pairs( ACTIVE_PLAYERS ) do
         if (not IsValid(v)) then
-            table.remove( ACTIVE_PLAYERS, k );
+            table.remove( ACTIVE_PLAYERS, v );
         else
             if ( v:Team( ) == 1 ) then
                 _team1count = _team1count + 1;
@@ -744,12 +751,14 @@ end
 -- Ends the round and initializes a new one.
 
 function GM:GAME_OVER( )
+	PrintMessage(HUD_PRINTCENTER, "Game over!")
     for k, v in pairs( player.GetAll( ) ) do
         v:SetTeam( TEAM_SPECTATOR )
         v:Spectate( OBS_MODE_ROAMING ) -- when you spawn them call UnSpectate( ) on them
     end
 
     ACTIVE_PLAYERS = { }
+
 
     timer.Simple( 30, function( )
         hook.Call( "NEW_ROUND", GAMEMODE )
