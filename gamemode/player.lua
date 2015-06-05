@@ -118,7 +118,7 @@ function GM:PlayerDeathThink(pl, newteam)
 
 	if (pl:KeyPressed(IN_ATTACK) or pl:KeyPressed(IN_ATTACK2) or pl:KeyPressed(IN_JUMP)) then
 
-		(pl.Spawn)
+		pl:Spawn()
 
 	end
 
@@ -218,8 +218,7 @@ function GM:PlayerDeath(ply, inflictor, attacker)
 	table.remove( ACTIVE_PLAYERS, table.KeyFromValue( ACTIVE_PLAYERS, victim ) );
 
 DetectEndRound( );
- 
- end
+
 
 end
 
@@ -236,7 +235,7 @@ function GM:PlayerInitialSpawn(ply)
     ply:SetTeam(1)
     end
  
-
+end
 
 --[[---------------------------------------------------------
 	Name: gamemode:PlayerSpawnAsSpectator()
@@ -728,7 +727,7 @@ function DetectEndRound( )
     local _team1count = 0;
     local _team2count = 0;
     for k, v in pairs( ACTIVE_PLAYERS ) do
-        if ( !IsValid( v ) ) then
+        if (not IsValid(v)) then
             table.remove( ACTIVE_PLAYERS, k );
         else
             if ( v:Team( ) == 1 ) then
@@ -739,7 +738,7 @@ function DetectEndRound( )
         end
     end
 
-    if ( table.Count( ACTIVE_PLAYERS ) < 2 || _team1count == 0 || _team2count == 0 ) then hook.Call( "GAME_OVER", GAMEMODE ) end;
+    if ( table.Count( ACTIVE_PLAYERS ) < 2 or _team1count == 0 or _team2count == 0 ) then hook.Call( "GAME_OVER", GAMEMODE ) end;
 end
 
 -- Ends the round and initializes a new one.
@@ -756,7 +755,7 @@ function GM:GAME_OVER( )
         hook.Call( "NEW_ROUND", GAMEMODE )
     end )
 
-
+end
 
 --[[---------------------------------------------------------
 	Name: gamemode:PlayerSpray()
