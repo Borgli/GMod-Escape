@@ -26,6 +26,8 @@ include("npc.lua")
 include("variable_edit.lua")
 include("resources.lua")
 
+CURRENT_ALIVE = {}
+
 GM.PlayerSpawnTime = {}
 
 --[[---------------------------------------------------------
@@ -81,6 +83,9 @@ function GM:DoPlayerDeath(ply, attacker, dmginfo)
 	end
 
 	DetectEndRound();
+	table.RemoveByValue(CURRENT_ALIVE, ply)
+	if (CURRENT_ALIVE < 2) then
+		PrintMessage(HUD_PRINTCENTER, "Game over from Rune!")
 
 end
 

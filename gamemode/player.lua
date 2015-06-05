@@ -116,11 +116,11 @@ function GM:PlayerDeathThink(pl, newteam)
 	if (pl.NextSpawnTime and pl.NextSpawnTime > CurTime()) then return
 	end
 
-	if (pl:KeyPressed(IN_ATTACK) or pl:KeyPressed(IN_ATTACK2) or pl:KeyPressed(IN_JUMP)) then
+	--[[if (pl:KeyPressed(IN_ATTACK) or pl:KeyPressed(IN_ATTACK2) or pl:KeyPressed(IN_JUMP)) then
 
 		pl:Spawn()
 
-	end
+	end--]]--
 
 end
 
@@ -265,6 +265,7 @@ end
 -----------------------------------------------------------]]
 function GM:PlayerSpawn(pl)
 
+	--hook.Call("PlayerInitialSpawn", GAMEMODE, pl)
 	--
 	-- If the player doesn't have a team in a TeamBased game
 	-- then spawn him as a spectator
@@ -280,6 +281,7 @@ function GM:PlayerSpawn(pl)
 	pl:UnSpectate()
 
 
+	table.insert(CURRENT_ALIVE, pl)
 
 	if (pl:Team() == TEAM_SURVIVORS) then
 	 	player_manager.SetPlayerClass(pl, "player_survivor")
