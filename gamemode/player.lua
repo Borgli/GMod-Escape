@@ -718,9 +718,7 @@ end
 function GM:NEW_ROUND( )
 	PrintMessage(HUD_PRINTCENTER, "New round!")
     if ( not ACTIVE_PLAYERS ) then ACTIVE_PLAYERS = { }; end
-
-    --timer.Create( Initialize, 1, 1 , function  ) 
-
+    
     for k, v in pairs( player.GetAll( ) ) do
        gamemode.Call ("PlayerSpawn", v)
         table.insert( ACTIVE_PLAYERS, v );
