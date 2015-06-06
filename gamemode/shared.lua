@@ -28,6 +28,7 @@ GM.TeamBased	= true
 
 TEAM_SURVIVORS = 1
 TEAM_MONSTERS = 2
+ACTIVE_PLAYERS = {}
 
 
 --[[---------------------------------------------------------
