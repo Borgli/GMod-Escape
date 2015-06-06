@@ -14,11 +14,11 @@ Clone the repo into `\Steam\steamapps\common\GarrysMod\garrysmod\gamemodes\`
 ##TODO-list:
 - Fix flashlight world model and primary attack
 - Add survivor player models.
-- Separate from workshop so we don't have to download everything from a pack when we use a little part.
+- Separate from workshop so we don't have to download everything from a pack when we use a small part.
 - Design monster
 - Add monster client overlay (effects)
-- Make round system.
-- Fix spawn. (Die -> spectator mode until next round. Leave a ragdoll.)
+- Make round system. (Implemented, but full of bugs)
+- Fix spawn. Die -> spectator mode until next round. Leave a ragdoll. (Implemented, but full of bugs)
 - Make map key entities and make them work with locked doors.
 
 ## Maps:
@@ -26,7 +26,7 @@ Clone the repo into `\Steam\steamapps\common\GarrysMod\garrysmod\gamemodes\`
 
 ## Monsters
 
-- Robert (placeholder)
+- Robert (placeholdername)
 	Runs fast while invisible, but slower than normal while visible. 30 second cooldown.
 	Cannot attack while invisible. (Disabled)
 	Footstep-noise while invisible.
