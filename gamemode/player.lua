@@ -228,12 +228,16 @@ end
 -----------------------------------------------------------]]
 
 function GM:PlayerInitialSpawn(pl)
+
     local teamn = math.random(1, 2) -- Takes a random number between 1 or 2
     math.randomseed(os.time()) --This makes sure the teams will always be random
     if team.NumPlayers(2) >= team.NumPlayers(1) and teamn == 2 then
     pl:SetTeam(1)
-    end
- 
+    
+	table.insert( ACTIVE_PLAYERS, pl );
+	end
+
+	
 end
 
 --[[---------------------------------------------------------
@@ -246,7 +250,7 @@ function GM:PlayerSpawnAsSpectator(pl)
 
 	if (pl:Team() == TEAM_UNASSIGNED) then
 
-		pl:Spectate(OBS_MODE_FIXED)
+		pl:Spectate(OBS_MODE_CHASE)
 		return
 
 	end
@@ -685,7 +689,7 @@ end
 	Desc: Make player join this team
 -----------------------------------------------------------]]
 function GM:PlayerJoinTeam(ply, teamid)
-
+--[[--------------------------------------------------------------------
 	local iOldTeam = ply:Team()
 
 	if (ply:Alive()) then
@@ -700,7 +704,7 @@ function GM:PlayerJoinTeam(ply, teamid)
 	ply.LastTeamSwitch = RealTime()
 
 	GAMEMODE:OnPlayerChangedTeam(ply, iOldTeam, teamid)
-
+--]]--------------------------------------------------------------------
 end
 
 --[[---------------------------------------------------------
@@ -711,6 +715,8 @@ function GM:OnPlayerChangedTeam(ply, oldteam, newteam)
 	-- Here's an immediate respawn thing by default. If you want to
 	-- re-create something more like CS or some shit you could probably
 	-- change to a spectator or something while dead.
+
+	--[[----------------------------------------------------------------
 	if (newteam == TEAM_SPECTATOR) then
 
 		-- If we changed to spectator mode, respawn where we are
@@ -730,7 +736,7 @@ function GM:OnPlayerChangedTeam(ply, oldteam, newteam)
 		-- team that we chose
 
 	end
-
+	--]]---------------------------------------------------------------
 	PrintMessage(HUD_PRINTTALK, Format("%s joined '%s'", ply:Nick(), team.GetName(newteam)))
 
 end

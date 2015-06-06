@@ -35,7 +35,11 @@ GM.PlayerSpawnTime = {}
    Desc: Called immediately after starting the gamemode
 -----------------------------------------------------------]]
 function GM:Initialize()
-	hook.Call()
+--[[--------------------------------------------------------------------
+ if (table.Count ( ACTIVE_PLAYERS ) = > 1) then hook.Call ("NEW_ROUND", GAMEMODE)
+ 	else PrintMessage(HUD_PRINTCENTER, "Waiting for more players")
+ end
+--]]--------------------------------------------------------------------
 end
 
 --[[---------------------------------------------------------
