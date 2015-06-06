@@ -227,12 +227,11 @@ end
 	Desc: Called just before the player's first spawn
 -----------------------------------------------------------]]
 
-function GM:PlayerInitialSpawn(ply)
+function GM:PlayerInitialSpawn(pl)
     local teamn = math.random(1, 2) -- Takes a random number between 1 or 2
     math.randomseed(os.time()) --This makes sure the teams will always be random
- 
     if team.NumPlayers(2) >= team.NumPlayers(1) and teamn == 2 then
-    ply:SetTeam(1)
+    pl:SetTeam(1)
     end
  
 end
@@ -263,22 +262,44 @@ end
 	Name: gamemode:PlayerSpawn()
 	Desc: Called when a player spawns
 -----------------------------------------------------------]]
-function GM:PlayerSpawn(pl)
+function GM:PlayerSpawn( )
+	
+--hook.Call("PlayerInitialSpawn", GAMEMODE, ply)
+--[[
+	for k, v in pairs( player.GetAll( ) ) do
+		
+    	local teamn = math.random(1, 2)
+    	math.randomseed(os.time()) 
+    	if team.NumPlayers(2) >= team.NumPlayers(1) and teamn == 2 then 
+    	v:SetTeam(1)
+    	v:UnSpectate()
+    	v:Spawn()
+    	table.insert( ACTIVE_PLAYERS, v );
+    	
+			end
 
-	--hook.Call("PlayerInitialSpawn", GAMEMODE, pl)
+	
+        --gamemode.Call ("PlayerInitialSpawn", v)
+
+        --table.insert( ACTIVE_PLAYERS, v );
+    end
+
+--]]
+end
 	--
 	-- If the player doesn't have a team in a TeamBased game
 	-- then spawn him as a spectator
 	--
+	--[[-------------------------------------
 	if (GAMEMODE.TeamBased and (pl:Team() == TEAM_SPECTATOR or pl:Team() == TEAM_UNASSIGNED)) then
 
 		GAMEMODE:PlayerSpawnAsSpectator(pl)
 		return
 
 	end
-
+	
 	-- Stop observer mode
-	pl:UnSpectate()
+	--pl:UnSpectate()
 
 
 	table.insert(CURRENT_ALIVE, pl)
@@ -303,7 +324,7 @@ function GM:PlayerSpawn(pl)
 	hook.Call("PlayerSetModel", GAMEMODE, pl)
 	pl:SetupHands()
 end
-
+	--]]-------------------------------------
 --[[---------------------------------------------------------
 	Name: gamemode:PlayerSetModel()
 	Desc: Set the player's model
@@ -717,13 +738,32 @@ end
 
 function GM:NEW_ROUND( )
 	PrintMessage(HUD_PRINTCENTER, "New round!")
-    if ( not ACTIVE_PLAYERS ) then ACTIVE_PLAYERS = { }; end
-    
+    if ( not ACTIVE_PLAYERS ) then ACTIVE_PLAYERS = { }; 
+	end
+
+    for k, v in pairs( player.GetAll( ) ) do
+		
+    	local teamn = math.random(1, 2)
+    	math.randomseed(os.time()) 
+    	if team.NumPlayers(2) >= team.NumPlayers(1) and teamn == 2 then 
+    	v:SetTeam(1)
+    	v:UnSpectate()
+    	v:Spawn()
+    	table.insert( ACTIVE_PLAYERS, v );
+    	
+		end
+	end	
+
+end
+
+
+   --[[ 
     for k, v in pairs( player.GetAll( ) ) do
        gamemode.Call ("PlayerSpawn", v)
-        table.insert( ACTIVE_PLAYERS, v );
+       table.insert( ACTIVE_PLAYERS, v );
     end
-end
+    --]]
+
 
 --Detects if the round is over or not
 
@@ -760,7 +800,7 @@ function GM:GAME_OVER( )
     ACTIVE_PLAYERS = { }
 
 
-    timer.Simple( 15, function( )
+    timer.Simple( 10, function( )
         hook.Call( "NEW_ROUND", GAMEMODE )
     end )
 

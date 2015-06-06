@@ -64,6 +64,7 @@ end
    Name: gamemode:DoPlayerDeath()
    Desc: Carries out actions when the player dies
 -----------------------------------------------------------]]
+
 function GM:DoPlayerDeath(ply, attacker, dmginfo)
 
 	ply:CreateRagdoll()
@@ -86,6 +87,7 @@ function GM:DoPlayerDeath(ply, attacker, dmginfo)
 	table.RemoveByValue(CURRENT_ALIVE, ply)
 	if (CURRENT_ALIVE < 2) then
 		PrintMessage(HUD_PRINTCENTER, "Game over from Rune!")
+	end
 
 end
 
