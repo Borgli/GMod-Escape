@@ -221,7 +221,8 @@ local SCORE_BOARD = {
 
 	Think = function(self, w, h)
 
-		self.Name:SetText(GetHostName())
+		-- Set title of scoreboard.
+		self.Name:SetText("Horror Escape")
 
 		--
 		-- Loop through each player, and if one doesn't have a score entry - create it.

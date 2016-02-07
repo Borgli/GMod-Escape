@@ -57,7 +57,7 @@ end
 --
 function PLAYER:Loadout()
     self.Player:StripWeapons();
-    self.Player:Give("m9k_knife");
+    self.Player:Give("ct_knife");
     --self.Player:GiveAmmo(255, "Pistol", true)
 
 end

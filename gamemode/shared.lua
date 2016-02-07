@@ -20,11 +20,12 @@ include('player_class/player_survivor.lua')
 include('player_class/player_monster.lua')
 include('util.lua')
 
-GM.Name			= "Ohm Project"
+GM.Name			= "Horror Escape"
 GM.Author		= "Ohm"
 GM.Email		   = "ohmos@ohm.ohm"
 GM.Website		= "www.ohm.ohm"
 GM.TeamBased	= true
+GM.DevMode     = true
 
 TEAM_SURVIVORS = 1
 TEAM_MONSTERS  = 2
@@ -161,11 +162,11 @@ function GM:CreateTeams()
 
    --TEAM_SURVIVORS = 1
    team.SetUp(1, "Survivors", Color(0, 0, 255))
-   team.SetSpawnPoint(TEAM_SURVIVORS, "ai_hint") -- <-- This would be info_terrorist or some entity that is in your map
+   team.SetSpawnPoint(TEAM_SURVIVORS, "info_player_start") -- <-- This would be info_terrorist or some entity that is in your map
 
    --TEAM_MONSTERS = 2
    team.SetUp(2, "Monsters", Color(255, 150, 0))
-   team.SetSpawnPoint(TEAM_MONSTERS, "sky_camera") -- <-- This would be info_terrorist or some entity that is in your map
+   team.SetSpawnPoint(TEAM_MONSTERS, "info_terrorist") -- <-- This would be info_terrorist or some entity that is in your map
 
    --[[	TEAM_SPECTATORS = 3
        team.SetUp(TEAM_SPECTATORS, "Sexy Team", Color(255, 150, 150))

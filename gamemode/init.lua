@@ -125,14 +125,15 @@ timer.Create("HostnameThink", 30, 0, HostnameThink)
 function GM:ShowTeam(ply)
 
 	if (not GAMEMODE.TeamBased) then return end
-
-	local TimeBetweenSwitches = GAMEMODE.SecondsBetweenTeamSwitches or 10
-	if (ply.LastTeamSwitch and RealTime() - ply.LastTeamSwitch < TimeBetweenSwitches) then
-		ply.LastTeamSwitch = ply.LastTeamSwitch + 1
-		ply:ChatPrint(Format("Please wait %i more seconds before trying to change team again", (TimeBetweenSwitches - (RealTime() - ply.LastTeamSwitch)) + 1))
-		return false
+	-- Disabled for dev purposes. If enabled will not allow players to change team before a timer has ended.
+	if (not GAMEMODE.DevMode) then
+		local TimeBetweenSwitches = GAMEMODE.SecondsBetweenTeamSwitches or 10
+		if (ply.LastTeamSwitch and RealTime() - ply.LastTeamSwitch < TimeBetweenSwitches) then
+			ply.LastTeamSwitch = ply.LastTeamSwitch + 1
+			ply:ChatPrint(Format("Please wait %i more seconds before trying to change team again", (TimeBetweenSwitches - (RealTime() - ply.LastTeamSwitch)) + 1))
+			return false
+		end
 	end
-
 	-- For clientside see cl_pickteam.lua
 	ply:SendLua("GAMEMODE:ShowTeam()")
 
