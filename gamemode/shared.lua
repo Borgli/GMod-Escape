@@ -22,12 +22,12 @@ include('util.lua')
 
 GM.Name			= "Ohm Project"
 GM.Author		= "Ohm"
-GM.Email		= "ohmos@ohm.ohm"
+GM.Email		   = "ohmos@ohm.ohm"
 GM.Website		= "www.ohm.ohm"
 GM.TeamBased	= true
 
 TEAM_SURVIVORS = 1
-TEAM_MONSTERS = 2
+TEAM_MONSTERS  = 2
 ACTIVE_PLAYERS = {}
 
 
