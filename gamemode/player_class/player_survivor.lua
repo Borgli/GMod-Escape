@@ -22,6 +22,7 @@ PLAYER.TeammateNoCollide	= true		-- Do we collide with teammates or run straight
 PLAYER.AvoidPlayers			= true		-- Automatically swerves around other players
 PLAYER.UseVMHands			= true		-- Uses viewmodel hands
 
+PLAYER.PlayerModel          = "models/player/kleiner.mdl"
 --
 -- Name: PLAYER:SetupDataTables
 -- Desc: Set up the network table accessors
@@ -64,13 +65,13 @@ function PLAYER:Loadout()
 
 end
 
+function PLAYER:AssignModel(model)
+    self.PlayerModel = model
+end
+
 function PLAYER:SetModel()
-
-    local cl_playermodel = self.Player:GetInfo("cl_playermodel")
-    local modelname = player_manager.TranslatePlayerModel(cl_playermodel)
-    util.PrecacheModel(modelname)
-    self.Player:SetModel(modelname)
-
+    util.PrecacheModel(self.PlayerModel)
+    self.Player:SetModel(self.PlayerModel)
 end
 
 -- Clientside only

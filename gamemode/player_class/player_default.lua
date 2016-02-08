@@ -22,6 +22,8 @@ PLAYER.TeammateNoCollide	= true		-- Do we collide with teammates or run straight
 PLAYER.AvoidPlayers			= true		-- Automatically swerves around other players
 PLAYER.UseVMHands			= true		-- Uses viewmodel hands
 
+PLAYER.PlayerModel          = "models/player/kleiner.mdl"
+
 --
 -- Name: PLAYER:SetupDataTables
 -- Desc: Set up the network table accessors
@@ -56,12 +58,13 @@ end
 -- Ret1:
 --
 function PLAYER:Loadout()
-
-   print("Dette er en test!")
 	self.Player:Give("weapon_pistol")
 	self.Player:GiveAmmo(255, "Pistol", true)
 	self.Player:Give("weapon_flashlight")
+end
 
+function PLAYER:AssignModel(model)
+    self.PlayerModel = model
 end
 
 function PLAYER:SetModel()

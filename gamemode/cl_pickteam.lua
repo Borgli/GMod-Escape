@@ -36,7 +36,7 @@ function GM:ShowTeam()
 	SpectatorButton:SetPos(0, ((h/2)*(1/3))*2)
 	SpectatorButton:SetSize(w, (h/2)*(1/3))
 	SpectatorButton:SetText("Spectators")
-	function SpectatorButton.DoClick() self:HideTeam() RunConsoleCommand("changeteam", TEAM_SPECTATOR) end
+	function SpectatorButton.DoClick() self:HideTeam() gamemode.Call("PlayerSpawnAsSpectator", LocalPlayer()) end
 
 	local SelectPanel = vgui.Create("DScrollPanel", RightPanel)
 	local w, h = RightPanel:GetSize()
@@ -44,7 +44,6 @@ function GM:ShowTeam()
 	SelectPanel:SetSize(w,h/2)
 	SelectPanel:SetBackgroundColor(Color(100,0,0,255))
 	SelectPanel:AlignBottom(0)
-	
 	
 	--self:ClickMonsters(SelectPanel);
 
@@ -132,39 +131,29 @@ end
 
 function GM:ClickSurvivors(SelectPanel)
 	local SurvivorModels = {
-		"models/player/breen.mdl",
 		"models/player/kleiner.mdl",
 		"models/player/alyx.mdl",
 		"models/player/barney.mdl"
 	}
-	self:DisplayModelList(SelectPanel, SurvivorModels)
+	self:DisplayModelList(SelectPanel, SurvivorModels, TEAM_SURVIVORS)
 end
 
 function GM:ClickMonsters(SelectPanel)
 	local MonsterModels = {
-		"models/player/kleiner.mdl",
-		"models/player/kleiner.mdl",
-		"models/player/kleiner.mdl",
-		"models/player/kleiner.mdl",
-		"models/player/kleiner.mdl",
-		"models/player/kleiner.mdl",
-		"models/player/kleiner.mdl",
-		"models/player/kleiner.mdl",
-		"models/player/kleiner.mdl",
-		"models/player/kleiner.mdl"
-
+		"models/player/bobert/AOJoker.mdl",
+		"models/player/breen.mdl"
 	}
-	self:DisplayModelList(SelectPanel, MonsterModels)
+	self:DisplayModelList(SelectPanel, MonsterModels, TEAM_MONSTERS)
 end
 
-function GM:DisplayModelList(SelectPanel, models)
+function GM:DisplayModelList(SelectPanel, models, team)
 	local x = 0
 	local y = 0
 	
 	local w, h = SelectPanel:GetSize()
 	SelectPanel:Clear()
 	for i = 1, #models do
-		local SelectModel = vgui.Create("DModelPanel",SelectPanel)
+		local SelectModel = vgui.Create("DModelPanel",SelectPanel, "select")
 		--SelectModel:SetPos(x/3 , h/3 * (y % 3))
 		SelectModel:SetPos(w/3 * x, h/3 * y)
 		SelectModel:SetSize(w/3,h/3)
@@ -180,7 +169,11 @@ function GM:DisplayModelList(SelectPanel, models)
 		SelectModel:GetEntity():SetEyeTarget(SelectModel:GetCamPos() - Vector(0,0,5))
 
 		function SelectModel:LayoutEntity(entity) return end
-		function SelectModel.DoClick() self:DisplaySelectedModel(models[i]) end
+		function SelectModel.DoClick() 
+			player_manager.SetPlayerClass(LocalPlayer(), "player_" .. (team == TEAM_MONSTERS and "monster" or "survivor"))
+			player_manager.RunClass(LocalPlayer(),"SetModel",models[i])
+			self:HideTeam()
+		end
 	end
 end
 
@@ -193,10 +186,12 @@ function GM:DisplaySelectedModel(model)
 		self.ModelSelect:SetCamPos(Vector(30,0,65))
 	end
 
-	self.ModelSelect:SetModel(model)
-	self.ModelSelect:GetEntity():SetEyeTarget(self.ModelSelect:GetCamPos() - Vector(0,0,5))
+	if (self.ModelSelect:GetModel() ~= model) then
+		self.ModelSelect:SetModel(model)
+		self.ModelSelect:GetEntity():SetEyeTarget(self.ModelSelect:GetCamPos() - Vector(0,0,5))
 
-	function self.ModelSelect:LayoutEntity(entity) return end
+		function self.ModelSelect:LayoutEntity(entity) return end
+	end
 
 end
 

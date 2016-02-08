@@ -245,18 +245,18 @@ end
 	Desc: Player spawns as a spectator
 -----------------------------------------------------------]]
 function GM:PlayerSpawnAsSpectator(pl)
-
+	print("Spectate!")
 	pl:StripWeapons()
 
 	if (pl:Team() == TEAM_UNASSIGNED) then
 
-		pl:Spectate(OBS_MODE_CHASE)
+		pl:Spectate(OBS_MODE_ROAMING)
 		return
 
 	end
 
 	pl:SetTeam(TEAM_SPECTATOR)
-	pl:Spectate(OBS_MODE_CHASE)
+	pl:Spectate(OBS_MODE_ROAMING)
 
 end
 
@@ -266,7 +266,7 @@ end
 	Name: gamemode:PlayerSpawn()
 	Desc: Called when a player spawns
 -----------------------------------------------------------]]
-function GM:PlayerSpawn( )
+function GM:PlayerSpawn(ply)
    
    --player_manager.SetPlayerClass(LocalPlayer(), "player_survivor")
 --hook.Call("PlayerInitialSpawn", GAMEMODE, ply)
@@ -340,7 +340,8 @@ function GM:PlayerSetModel(pl)
 	--[[local model = "models/player/bobert/joker.mdl"
 	util.PrecacheModel(model)
 	pl:SetModel(model)]]--
-	player_manager.RunClass(pl, "SetModel")
+	pl:SetModel(Model("models/player/bobert/joker.mdl"))
+	--player_manager.RunClass(pl, "SetModel")
 	--pl:SetModel(Model("models/narry/shrek_playermodel_v1.mdl"))
 end
 

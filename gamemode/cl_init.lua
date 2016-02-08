@@ -68,6 +68,13 @@ function GM:Think()
 			light.Style = 0
 		end
 	end
+
+	if (IsValid(self.TeamSelectFrame)) then
+		local panel = vgui.GetHoveredPanel()
+		if (IsValid(panel) and panel:GetName() == "select") then
+			self:DisplaySelectedModel(panel:GetModel())
+		end
+	end
 end
 
 --[[---------------------------------------------------------
