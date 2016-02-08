@@ -134,8 +134,8 @@ function GM:ClickSurvivors(SelectPanel)
 	local SurvivorModels = {
 		"models/player/breen.mdl",
 		"models/player/kleiner.mdl",
-		"models/player/kleiner.mdl"
-
+		"models/player/alyx.mdl",
+		"models/player/barney.mdl"
 	}
 	self:DisplayModelList(SelectPanel, SurvivorModels)
 end

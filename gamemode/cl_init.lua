@@ -13,9 +13,18 @@ include('shared.lua')
    Desc: Called immediately after starting the gamemode
 -----------------------------------------------------------]]
 function GM:Initialize()
-
 	GAMEMODE.ShowScoreboard = false
 
+	-- Hide these HUD elements.
+	local hideThese = {
+	   CHudHealth = true
+	}
+
+	hook.Add( "HUDShouldDraw", "HideHud", function( name )
+	if ( hideThese[ name ] ) then 
+	   return false 
+	end
+end )
 end
 
 --[[---------------------------------------------------------

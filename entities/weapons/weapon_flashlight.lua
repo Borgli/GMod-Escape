@@ -35,8 +35,10 @@ SWEP.Spawnable = true
 SWEP.AdminSpawnable = true
 SWEP.UseHands = true
 
-SWEP.ViewModel = Model("weapons/c_flashlight_zm.mdl")
-SWEP.WorldModel = Model("weapons/w_flashlight_zm.mdl")
+--SWEP.ViewModel = Model("weapons/c_flashlight_zm.mdl")
+SWEP.ViewModel = Model("models/maxofs2d/lamp_flashlight.mdl")
+--SWEP.WorldModel = Model("weapons/w_flashlight_zm.mdl")
+SWEP.WorldModel = Model("models/maxofs2d/lamp_flashlight.mdl")
 
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
@@ -158,6 +160,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:SecondaryAttack()
+   --[=[
 	if ( not IsValid( self ) or not IsValid( self.Owner ) or not self.Owner:GetActiveWeapon() or self.Owner:GetActiveWeapon() ~= self or not SERVER ) then return end
 	self.Active = not self.Active
 	if ( self.Active ) then
@@ -184,6 +187,7 @@ function SWEP:SecondaryAttack()
 		end )
 	end )
 	self:SetNextSecondaryFire( CurTime() + 0.23 )
+      ]=]
 end
 
 function SWEP:Initialize()

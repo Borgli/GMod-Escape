@@ -236,8 +236,8 @@ function GM:PlayerInitialSpawn(pl)
     
 	table.insert( ACTIVE_PLAYERS, pl );
 	end
-
-	
+    
+    
 end
 
 --[[---------------------------------------------------------
@@ -267,7 +267,8 @@ end
 	Desc: Called when a player spawns
 -----------------------------------------------------------]]
 function GM:PlayerSpawn( )
-	
+   
+   --player_manager.SetPlayerClass(LocalPlayer(), "player_survivor")
 --hook.Call("PlayerInitialSpawn", GAMEMODE, ply)
 --[[
 	for k, v in pairs( player.GetAll( ) ) do
