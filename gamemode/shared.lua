@@ -29,6 +29,7 @@ GM.DevMode     = true
 
 TEAM_SURVIVORS = 1
 TEAM_MONSTERS  = 2
+TEAM_SPECTATOR = 3
 ACTIVE_PLAYERS = {}
 
 
@@ -161,18 +162,18 @@ function GM:CreateTeams()
    if (not GAMEMODE.TeamBased) then return end
 
    --TEAM_SURVIVORS = 1
-   team.SetUp(1, "Survivors", Color(0, 0, 255))
+   team.SetUp(TEAM_SURVIVORS, "Survivors", Color(0, 0, 255))
    team.SetSpawnPoint(TEAM_SURVIVORS, "info_player_start") -- <-- This would be info_terrorist or some entity that is in your map
 
    --TEAM_MONSTERS = 2
-   team.SetUp(2, "Monsters", Color(255, 150, 0))
+   team.SetUp(TEAM_MONSTERS, "Monsters", Color(255, 150, 0))
    team.SetSpawnPoint(TEAM_MONSTERS, "info_terrorist") -- <-- This would be info_terrorist or some entity that is in your map
 
-   --[[	TEAM_SPECTATORS = 3
-       team.SetUp(TEAM_SPECTATORS, "Sexy Team", Color(255, 150, 150))
-       team.SetSpawnPoint(TEAM_SPECTATORS, "info_player_start") -- <-- This would be info_terrorist or some entity that is in your map
-   ]]--
-   team.SetSpawnPoint(TEAM_SPECTATOR, "worldspawn")
+   --TEAM_SPECTATORS = 3
+   team.SetUp(TEAM_SPECTATOR, "Spectators", Color(255, 150, 150))
+   team.SetSpawnPoint(TEAM_SPECTATOR, "worldspawn") -- <-- This would be info_terrorist or some entity that is in your map
+   
+   --team.SetSpawnPoint(TEAM_SPECTATOR, "worldspawn")
 
 end
 
