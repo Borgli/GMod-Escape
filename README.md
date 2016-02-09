@@ -11,6 +11,11 @@ Clone the repo into `\Steam\steamapps\common\GarrysMod\garrysmod\gamemodes\`
 "cl_init.lua" - lua file that is executed by the client when it connects.
 "shared.lua" - file shared by the server and the client.
 
+##Issues:
+- When picking either a survivor or a monster, the first option is always the one you get transformed into.
+  * When picking a survivor, Dr. Kleiner is always chosen.
+  * When picking a monster, the Joker is always chosen (I get the error object, so make sure the player has it).
+
 ##TODO-list:
 - Fix flashlight world model and primary attack
 - Add survivor player models.
