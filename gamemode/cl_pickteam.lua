@@ -5,7 +5,7 @@ include('shared.lua')
    Desc:
 -----------------------------------------------------------]]
 
-function GM:ShowTeam()
+function GM:ShowTeam(ply)
 	
 	if (IsValid(self.TeamSelectFrame)) then return end
 
@@ -36,7 +36,7 @@ function GM:ShowTeam()
 	SpectatorButton:SetPos(0, ((h/2)*(1/3))*2)
 	SpectatorButton:SetSize(w, (h/2)*(1/3))
 	SpectatorButton:SetText("Spectators")
-	function SpectatorButton.DoClick() self:HideTeam() gamemode.Call("PlayerSpawnAsSpectator", LocalPlayer()) end
+	function SpectatorButton.DoClick() self:HideTeam() RunConsoleCommand("changeteam", TEAM_SPECTATOR) end
 
 	local SelectPanel = vgui.Create("DScrollPanel", RightPanel)
 	local w, h = RightPanel:GetSize()
@@ -135,7 +135,7 @@ function GM:ClickSurvivors(SelectPanel)
 		"models/player/alyx.mdl",
 		"models/player/barney.mdl"
 	}
-	self:DisplayModelList(SelectPanel, SurvivorModels, TEAM_SURVIVORS)
+	self:DisplayModelList(SelectPanel, SurvivorModels, TEAM_SURVIVORS, ply)
 end
 
 function GM:ClickMonsters(SelectPanel)
@@ -143,7 +143,7 @@ function GM:ClickMonsters(SelectPanel)
 		"models/player/bobert/AOJoker.mdl",
 		"models/player/breen.mdl"
 	}
-	self:DisplayModelList(SelectPanel, MonsterModels, TEAM_MONSTERS)
+	self:DisplayModelList(SelectPanel, MonsterModels, TEAM_MONSTERS, ply)
 end
 
 function GM:DisplayModelList(SelectPanel, models, team)
@@ -169,9 +169,10 @@ function GM:DisplayModelList(SelectPanel, models, team)
 		SelectModel:GetEntity():SetEyeTarget(SelectModel:GetCamPos() - Vector(0,0,5))
 
 		function SelectModel:LayoutEntity(entity) return end
-		function SelectModel.DoClick() 
+		function SelectModel.DoClick()
+			RunConsoleCommand("changeteam", team)
 			player_manager.SetPlayerClass(LocalPlayer(), "player_" .. (team == TEAM_MONSTERS and "monster" or "survivor"))
-			player_manager.RunClass(LocalPlayer(),"SetModel",models[i])
+			--player_manager.RunClass(LocalPlayer(),"SetModel",models[i])
 			self:HideTeam()
 		end
 	end

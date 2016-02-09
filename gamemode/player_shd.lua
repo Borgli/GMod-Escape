@@ -104,6 +104,9 @@ end
 -----------------------------------------------------------]]
 function GM:PlayerNoClip(pl, on)
 
+	if ((pl:Team() == TEAM_SPECTATOR or pl:Team() == TEAM_UNASSIGNED) and not on) then
+		return false
+	end
 	-- Allow noclip if we're in single player
 	if (game.SinglePlayer()) then return true end
 

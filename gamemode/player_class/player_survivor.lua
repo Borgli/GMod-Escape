@@ -59,6 +59,7 @@ end
 function PLAYER:Loadout()
 
     self.Player:StripWeapons()
+    self.Player:Give("weapon_hands")
     --self.Player:Give("weapon_flashlight")
     -- Don't spawn with flashlight because this is broken atm. Must be fixed first.
     -- self.Player:Give("weapon_flashlight")
@@ -70,8 +71,7 @@ function PLAYER:AssignModel(model)
 end
 
 function PLAYER:SetModel()
-    util.PrecacheModel(self.PlayerModel)
-    self.Player:SetModel(self.PlayerModel)
+    self.Player:SetModel(Model(self.PlayerModel))
 end
 
 -- Clientside only

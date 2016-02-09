@@ -35,11 +35,21 @@ GM.PlayerSpawnTime = {}
    Desc: Called immediately after starting the gamemode
 -----------------------------------------------------------]]
 function GM:Initialize()
---[[--------------------------------------------------------------------
- if (table.Count ( ACTIVE_PLAYERS ) = > 1) then hook.Call ("NEW_ROUND", GAMEMODE)
- 	else PrintMessage(HUD_PRINTCENTER, "Waiting for more players")
- end
---]]--------------------------------------------------------------------
+	MsgN("Initializing Horror Escape...")
+	WaitForPlayers()
+end
+
+function WaitForPlayers()
+	-- Sets required players to start a game
+	if (table.Count ( ACTIVE_PLAYERS ) >= 1) then 
+		timer.Stop("waitingforply")
+		timer.Create("preptime",5,0,function() timer.Stop("preptime") hook.Call("NEW_ROUND", GAMEMODE) end)
+ 	else
+ 		PrintMessage(HUD_PRINTCENTER, "Waiting for more players")
+ 		if not timer.Start("waitingforply") then
+ 			timer.Create("waitingforply", 2, 0, WaitForPlayers)
+ 		end
+ 	end
 end
 
 --[[---------------------------------------------------------
@@ -89,7 +99,7 @@ function GM:DoPlayerDeath(ply, attacker, dmginfo)
 
 	DetectEndRound();
 	table.RemoveByValue(CURRENT_ALIVE, ply)
-	if (CURRENT_ALIVE < 2) then
+	if (#CURRENT_ALIVE < 2) then
 		PrintMessage(HUD_PRINTCENTER, "Game over from Rune!")
 	end
 

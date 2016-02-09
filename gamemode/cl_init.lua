@@ -21,10 +21,10 @@ function GM:Initialize()
 	}
 
 	hook.Add( "HUDShouldDraw", "HideHud", function( name )
-	if ( hideThese[ name ] ) then 
-	   return false 
-	end
-end )
+		if ( hideThese[ name ] ) then 
+	   		return false 
+		end
+	end)
 end
 
 --[[---------------------------------------------------------

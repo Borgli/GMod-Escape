@@ -2,6 +2,26 @@ include('util.lua')
 include('shared.lua')
 
 --[[---------------------------------------------------------
+	Name: gamemode:PlayerInitialSpawn()
+	Desc: Called just before the player's first spawn
+-----------------------------------------------------------]]
+-- First time player spawns on server
+function GM:PlayerInitialSpawn(pl)
+	--[[
+    local teamn = math.random(1, 2) -- Takes a random number between 1 or 2
+    math.randomseed(os.time()) --This makes sure the teams will always be random
+    if team.NumPlayers(2) >= team.NumPlayers(1) and teamn == 2 then
+    pl:SetTeam(1)
+    
+	table.insert( ACTIVE_PLAYERS, pl );
+	end
+    ]]--
+    pl:SetTeam(TEAM_UNASSIGNED)
+    table.insert(ACTIVE_PLAYERS, pl);
+end
+
+
+--[[---------------------------------------------------------
 	Name: gamemode:OnPhysgunFreeze(weapon, phys, ent, player)
 	Desc: The physgun wants to freeze a prop
 -----------------------------------------------------------]]
@@ -116,11 +136,11 @@ function GM:PlayerDeathThink(pl, newteam)
 	if (pl.NextSpawnTime and pl.NextSpawnTime > CurTime()) then return
 	end
 
-	--[[if (pl:KeyPressed(IN_ATTACK) or pl:KeyPressed(IN_ATTACK2) or pl:KeyPressed(IN_JUMP)) then
+	if (pl:KeyPressed(IN_ATTACK) or pl:KeyPressed(IN_ATTACK2) or pl:KeyPressed(IN_JUMP)) then
 
 		pl:Spawn()
 
-	end--]]--
+	end
 
 end
 
@@ -222,23 +242,6 @@ DetectEndRound( );
 
 end
 
---[[---------------------------------------------------------
-	Name: gamemode:PlayerInitialSpawn()
-	Desc: Called just before the player's first spawn
------------------------------------------------------------]]
-
-function GM:PlayerInitialSpawn(pl)
-
-    local teamn = math.random(1, 2) -- Takes a random number between 1 or 2
-    math.randomseed(os.time()) --This makes sure the teams will always be random
-    if team.NumPlayers(2) >= team.NumPlayers(1) and teamn == 2 then
-    pl:SetTeam(1)
-    
-	table.insert( ACTIVE_PLAYERS, pl );
-	end
-    
-    
-end
 
 --[[---------------------------------------------------------
 	Name: gamemode:PlayerSpawnAsSpectator()
@@ -266,7 +269,7 @@ end
 	Name: gamemode:PlayerSpawn()
 	Desc: Called when a player spawns
 -----------------------------------------------------------]]
-function GM:PlayerSpawn(ply)
+function GM:PlayerSpawn(pl)
    
    --player_manager.SetPlayerClass(LocalPlayer(), "player_survivor")
 --hook.Call("PlayerInitialSpawn", GAMEMODE, ply)
@@ -290,23 +293,28 @@ function GM:PlayerSpawn(ply)
     end
 
 --]]
-end
-	--
+	
 	-- If the player doesn't have a team in a TeamBased game
 	-- then spawn him as a spectator
-	--
-	--[[-------------------------------------
 	if (GAMEMODE.TeamBased and (pl:Team() == TEAM_SPECTATOR or pl:Team() == TEAM_UNASSIGNED)) then
-
 		GAMEMODE:PlayerSpawnAsSpectator(pl)
 		return
-
 	end
-	
 	-- Stop observer mode
-	--pl:UnSpectate()
+	pl:UnSpectate()
+	player_manager.OnPlayerSpawn(pl)
+	player_manager.RunClass(pl, "Spawn")
 
+	-- Call item loadout function
+	hook.Call("PlayerLoadout", GAMEMODE, pl)
 
+	-- Set player model
+	hook.Call("PlayerSetModel", GAMEMODE, pl)
+	pl:SetupHands()
+end
+	
+
+--[[
 	table.insert(CURRENT_ALIVE, pl)
 
 	if (pl:Team() == TEAM_SURVIVORS) then
@@ -315,19 +323,13 @@ end
 		player_manager.SetPlayerClass(pl, "player_monster")
 		pl:GodEnable()
 	end
-	player_manager.OnPlayerSpawn(pl)
-	player_manager.RunClass(pl, "Spawn")
+	
 
 	if (not IsValid(ACTIVE_PLAYERS)) then ACTIVE_PLAYERS = {} end
 	table.insert(ACTIVE_PLAYERS, pl)
 
 	hook.Call("RenderScreenspaceEffects", GAMEMODE)
-	-- Call item loadout function
-	hook.Call("PlayerLoadout", GAMEMODE, pl)
-
-	-- Set player model
-	hook.Call("PlayerSetModel", GAMEMODE, pl)
-	pl:SetupHands()
+	
 end
 	--]]-------------------------------------
 --[[---------------------------------------------------------
@@ -340,7 +342,7 @@ function GM:PlayerSetModel(pl)
 	--[[local model = "models/player/bobert/joker.mdl"
 	util.PrecacheModel(model)
 	pl:SetModel(model)]]--
-	pl:SetModel(Model("models/player/bobert/joker.mdl"))
+	--pl:SetModel(Model("models/player/bobert/joker.mdl"))
 	--player_manager.RunClass(pl, "SetModel")
 	--pl:SetModel(Model("models/narry/shrek_playermodel_v1.mdl"))
 end
@@ -583,6 +585,10 @@ function GM:ScalePlayerDamage(ply, hitgroup, dmginfo)
 
 	end
 
+	if (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH) then
+		dmginfo:ScaleDamage(1)
+	end
+
 end
 
 --[[---------------------------------------------------------
@@ -745,10 +751,26 @@ end
     -- Creates a new round
 
 function GM:NEW_ROUND( )
-	PrintMessage(HUD_PRINTCENTER, "New round!")
-    if ( not ACTIVE_PLAYERS ) then ACTIVE_PLAYERS = { }; 
+	
+    --if ( not ACTIVE_PLAYERS ) then ACTIVE_PLAYERS = { }; 
+	--end
+	ACTIVE_PLAYERS = {}
+	for k, v in pairs(player.GetAll()) do
+		if (IsValid(v)) then
+			if (v:Team() ~= TEAM_SPECTATOR and v:Team() ~= TEAM_UNASSIGNED) then
+				table.insert(ACTIVE_PLAYERS, v)
+				print(v:Nick())
+				v:Spawn()
+			end
+		end
 	end
-
+	if (#ACTIVE_PLAYERS >= 1) then
+		PrintMessage(HUD_PRINTCENTER, "New round!")
+	else
+		PrintMessage(HUD_PRINTCENTER, "Choose a team for game to start!")
+		timer.Create("tryagain",2,0,function() timer.Stop("tryagain") self:NEW_ROUND() end)
+	end
+	--[[
     for k, v in pairs( player.GetAll( ) ) do
 		
     	local teamn = math.random(1, 2)
@@ -761,6 +783,7 @@ function GM:NEW_ROUND( )
     	
 		end
 	end	
+	]]--
 
 end
 
@@ -785,7 +808,7 @@ function DetectEndRound( )
         if (not IsValid(v)) then
             table.remove( ACTIVE_PLAYERS, v );
         else
-            if ( v:Team( ) == 1 ) then
+            if ( v:Team( ) == TEAM_MONSTER ) then
                 _team1count = _team1count + 1;
             else
                 _team2count = _team2count + 1;
