@@ -760,6 +760,7 @@ function GM:NEW_ROUND( )
 			if (v:Team() ~= TEAM_SPECTATOR and v:Team() ~= TEAM_UNASSIGNED) then
 				table.insert(ACTIVE_PLAYERS, v)
 				print(v:Nick())
+				v:UnSpectate()
 				v:Spawn()
 			end
 		end

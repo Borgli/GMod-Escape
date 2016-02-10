@@ -1,3 +1,4 @@
+--[[
 givelight_cv = CreateConVar( "sv_givelight", "0", { FCVAR_ARCHIVE, FCVAR_DONTRECORD, FCVAR_REPLICATED }, "Toggles spawing with the flashlight." )
 
 shl_convar = CreateConVar( "sv_shoulderlight", "0", { FCVAR_ARCHIVE, FCVAR_DONTRECORD, FCVAR_REPLICATED }, "Toggles drawing the flashlight on pressing the flashlight bind." )
@@ -74,3 +75,4 @@ list.Set( "FlashlightTextures", "effects/flashlight/flashlight001_l4d2", { Name 
 list.Set( "FlashlightTextures", "effects/flashlight/flashlight_trinity", { Name = "Trinity Renderer" } )
 list.Set( "FlashlightTextures", "effects/flashlight/flashlight001_ronster", { Name = "Ronster's Flashlight" } )
 list.Set( "FlashlightTextures", "effects/flashlight/flashlight_horrible", { Name = "Horrible Flashlight" } )
+]]--
