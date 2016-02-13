@@ -1,30 +1,17 @@
 AddCSLuaFile("cl_init.lua")
-AddCSLuaFile("shared.lua")
-AddCSLuaFile("cl_scoreboard.lua")
-AddCSLuaFile("cl_targetid.lua")
-AddCSLuaFile("cl_hudpickup.lua")
-AddCSLuaFile("cl_spawnmenu.lua")
-AddCSLuaFile("cl_deathnotice.lua")
 AddCSLuaFile("cl_pickteam.lua")
-AddCSLuaFile("cl_voice.lua")
+AddCSLuaFile("shared.lua")
 
-AddCSLuaFile("obj_player_extend.lua")
-AddCSLuaFile("gravitygun.lua")
 AddCSLuaFile("player_shd.lua")
 AddCSLuaFile("animations.lua")
-AddCSLuaFile("player_class/player_default.lua")
 AddCSLuaFile("player_class/player_survivor.lua")
 AddCSLuaFile("player_class/player_monster.lua")
-AddCSLuaFile("util.lua")
 
 -- Disabled flashlight because it's bugged.
 --AddCSLuaFile("flashlight_init.lua")
 
 include("shared.lua")
 include("player.lua")
-include("npc.lua")
-include("variable_edit.lua")
-include("resources.lua")
 
 CURRENT_ALIVE = {}
 

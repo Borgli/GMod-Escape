@@ -1,11 +1,5 @@
 
-include('cl_scoreboard.lua')
-include('cl_targetid.lua')
-include('cl_hudpickup.lua')
-include('cl_spawnmenu.lua')
-include('cl_deathnotice.lua')
 include('cl_pickteam.lua')
-include('cl_voice.lua')
 include('shared.lua')
 
 --[[---------------------------------------------------------

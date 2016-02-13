@@ -1,4 +1,3 @@
-include('util.lua')
 include('shared.lua')
 
 --[[---------------------------------------------------------
@@ -16,6 +15,7 @@ function GM:PlayerInitialSpawn(pl)
 	table.insert( ACTIVE_PLAYERS, pl );
 	end
     ]]--
+   print("Inside GM:PlayerInitialSpawn!")
     pl:SetTeam(TEAM_UNASSIGNED)
     table.insert(ACTIVE_PLAYERS, pl);
 end

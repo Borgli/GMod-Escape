@@ -136,6 +136,8 @@ function GM:ClickSurvivors(SelectPanel)
 		"models/player/barney.mdl"
 	}
 	self:DisplayModelList(SelectPanel, SurvivorModels, TEAM_SURVIVORS, ply)
+
+	print("GM:ClickSurvivors called!")
 end
 
 function GM:ClickMonsters(SelectPanel)
@@ -144,6 +146,8 @@ function GM:ClickMonsters(SelectPanel)
 		"models/player/breen.mdl"
 	}
 	self:DisplayModelList(SelectPanel, MonsterModels, TEAM_MONSTERS, ply)
+
+	print("GM:ClickMonsters called!")
 end
 
 function GM:DisplayModelList(SelectPanel, models, team)
@@ -194,6 +198,7 @@ function GM:DisplaySelectedModel(model)
 		function self.ModelSelect:LayoutEntity(entity) return end
 	end
 
+	print("GM:DisplaySelectedModel called!")
 end
 
 function GM:HideTeam()
