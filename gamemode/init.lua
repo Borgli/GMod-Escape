@@ -22,21 +22,21 @@ GM.PlayerSpawnTime = {}
    Desc: Called immediately after starting the gamemode
 -----------------------------------------------------------]]
 function GM:Initialize()
-	MsgN("Initializing Horror Escape...")
-	WaitForPlayers()
+   MsgN("Initializing Horror Escape...")
+   WaitForPlayers()
 end
 
 function WaitForPlayers()
-	-- Sets required players to start a game
-	if (table.Count ( ACTIVE_PLAYERS ) >= 1) then 
-		timer.Stop("waitingforply")
-		timer.Create("preptime",5,0,function() timer.Stop("preptime") hook.Call("NEW_ROUND", GAMEMODE) end)
- 	else
- 		PrintMessage(HUD_PRINTCENTER, "Waiting for more players")
- 		if not timer.Start("waitingforply") then
- 			timer.Create("waitingforply", 2, 0, WaitForPlayers)
- 		end
- 	end
+   -- Sets required players to start a game
+   if (table.Count ( ACTIVE_PLAYERS ) >= 1) then 
+      timer.Stop("waitingforply")
+      timer.Create("preptime", 5, 0, function() timer.Stop("preptime") hook.Call("NEW_ROUND", GAMEMODE) end)
+   else
+      PrintMessage(HUD_PRINTCENTER, "Waiting for more players")
+      if not timer.Start("waitingforply") then
+	 timer.Create("waitingforply", 2, 0, WaitForPlayers)
+      end
+   end
 end
 
 --[[---------------------------------------------------------
@@ -44,6 +44,7 @@ end
    Desc: Called as soon as all map entities have been spawned
 -----------------------------------------------------------]]
 function GM:InitPostEntity()
+   print("All entities spawned!")
 	--hook.Call( "NEW_ROUND", GAMEMODE )
 end
 
@@ -59,13 +60,13 @@ end
    Desc: Called when the Lua system is about to shut down
 -----------------------------------------------------------]]
 function GM:ShutDown()
+   print("Shutting down...")
 end
 
 --[[---------------------------------------------------------
    Name: gamemode:DoPlayerDeath()
    Desc: Carries out actions when the player dies
 -----------------------------------------------------------]]
-
 function GM:DoPlayerDeath(ply, attacker, dmginfo)
 
 	ply:CreateRagdoll()
@@ -97,6 +98,7 @@ end
    Desc: The entity has received damage
 -----------------------------------------------------------]]
 function GM:EntityTakeDamage(ent, info)
+   print("Ouch!")
 end
 
 --[[---------------------------------------------------------
@@ -106,8 +108,10 @@ end
 function GM:CreateEntityRagdoll(entity, ragdoll)
 end
 
+--[[---------------------------------------------------------
 -- Set the ServerName every 30 seconds in case it changes..
 -- This is for backwards compatibility only - client can now use GetHostName()
+-----------------------------------------------------------]]
 local function HostnameThink()
 
 	SetGlobalString("ServerName", GetHostName())
@@ -120,20 +124,25 @@ timer.Create("HostnameThink", 30, 0, HostnameThink)
 	Show the default team selection screen
 -----------------------------------------------------------]]
 function GM:ShowTeam(ply)
+   print("GM:ShowTeam called!")
 
-	if (not GAMEMODE.TeamBased) then return end
-	-- Disabled for dev purposes. If enabled will not allow players to change team before a timer has ended.
-	if (not GAMEMODE.DevMode) then
-		local TimeBetweenSwitches = GAMEMODE.SecondsBetweenTeamSwitches or 10
-		if (ply.LastTeamSwitch and RealTime() - ply.LastTeamSwitch < TimeBetweenSwitches) then
-			ply.LastTeamSwitch = ply.LastTeamSwitch + 1
-			ply:ChatPrint(Format("Please wait %i more seconds before trying to change team again", (TimeBetweenSwitches - (RealTime() - ply.LastTeamSwitch)) + 1))
-			return false
-		end
-	end
-	-- For clientside see cl_pickteam.lua
-	ply:SendLua("GAMEMODE:ShowTeam()")
+   if (not GAMEMODE.TeamBased) then 
+      print("Note: 'not GAMEMODE.TeamBased', returning from ShowTeam...")
+      return 
+   end
+   -- Disabled for dev purposes. If enabled will not allow players to change team before a timer has ended.
+   if (not GAMEMODE.DevMode) then
+      print("Inside 'not GAMEMODE.DevMode'")
+      local TimeBetweenSwitches = GAMEMODE.SecondsBetweenTeamSwitches or 10
+      if (ply.LastTeamSwitch and RealTime() - ply.LastTeamSwitch < TimeBetweenSwitches) then
+	 ply.LastTeamSwitch = ply.LastTeamSwitch + 1
+	 ply:ChatPrint(Format("Please wait %i more seconds before trying to change team again", (TimeBetweenSwitches - (RealTime() - ply.LastTeamSwitch)) + 1))
+	 return false
+      end
+   end
 
+   -- For clientside see cl_pickteam.lua
+   ply:SendLua("GAMEMODE:ShowTeam()")
 end
 
 --
@@ -144,20 +153,14 @@ end
 -- them to join.
 --
 function GM:CheckPassword(steamid, networkid, server_password, password, name)
-
-	-- The server has sv_password set
-	if (server_password ~= "") then
-
-		-- The joining clients password doesn't match sv_password
-		if (server_password ~= password) then
-			return false, "#GameUI_ServerRejectBadPassword"
-		end
-
-	end
-
-	--
-	-- Returning true means they're allowed to join the server
-	--
-	return true
-
+   -- The server has sv_password set
+   if (server_password ~= "") then
+      -- The joining clients password doesn't match sv_password
+      if (server_password ~= password) then
+	 return false, "#GameUI_ServerRejectBadPassword"
+      end
+   end
+   
+   -- Returning true means they're allowed to join the server
+   return true
 end

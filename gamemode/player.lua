@@ -21,49 +21,6 @@ function GM:PlayerInitialSpawn(pl)
 end
 
 
---[[---------------------------------------------------------
-	Name: gamemode:OnPhysgunFreeze(weapon, phys, ent, player)
-	Desc: The physgun wants to freeze a prop
------------------------------------------------------------]]
-function GM:OnPhysgunFreeze(weapon, phys, ent, ply)
-
-	-- Object is already frozen (not ?)
-	if (not phys:IsMoveable()) then return false end
-	if (ent:GetUnFreezable()) then return false end
-
-	phys:EnableMotion(false)
-
-	-- With the jeep we need to pause all of its physics objects
-	-- to stop it spazzing out and killing the server.
-	if (ent:GetClass() == "prop_vehicle_jeep") then
-
-		local objects = ent:GetPhysicsObjectCount()
-
-		for i = 0, objects - 1 do
-
-			local physobject = ent:GetPhysicsObjectNum(i)
-			physobject:EnableMotion(false)
-
-		end
-
-	end
-
-	-- Add it to the player's frozen props
-	ply:AddFrozenPhysicsObject(ent, phys)
-
-	return true
-
-end
-
---[[---------------------------------------------------------
-	Name: gamemode:OnPhysgunReload(weapon, player)
-	Desc: The physgun wants to freeze a prop
------------------------------------------------------------]]
-function GM:OnPhysgunReload(weapon, ply)
-
-	ply:PhysgunUnfreeze(weapon)
-
-end
 
 --[[---------------------------------------------------------
 	Name: gamemode:PlayerAuthed()
@@ -109,9 +66,9 @@ end
 	Desc: Player has disconnected from the server.
 -----------------------------------------------------------]]
 function GM:PlayerDisconnected(player)
-table.remove( ACTIVE_PLAYERS, table.KeyFromValue( ACTIVE_PLAYERS, player ) );
+   table.remove( ACTIVE_PLAYERS, table.KeyFromValue( ACTIVE_PLAYERS, player ) );
 
-DetectEndRound();
+   DetectEndRound();
 end
 
 --[[---------------------------------------------------------
@@ -338,6 +295,7 @@ end
 -----------------------------------------------------------]]
 function GM:PlayerSetModel(pl)
 
+   print("GM:PlayerSetModel called!")
 	--local model = player_manager.TranslatePlayerModel("joker")
 	--[[local model = "models/player/bobert/joker.mdl"
 	util.PrecacheModel(model)
