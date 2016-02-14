@@ -12,6 +12,7 @@
 
 include('player_shd.lua')
 include('animations.lua')
+
 include('player_class/player_spectator.lua')
 include('player_class/player_survivor.lua')
 include('player_class/player_monster.lua')

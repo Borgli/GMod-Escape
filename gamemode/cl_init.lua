@@ -6,20 +6,20 @@ include('shared.lua')
 --[[---------------------------------------------------------
    Name: gamemode:Initialize()
    Desc: Called immediately after starting the gamemode
------------------------------------------------------------]]
+   -----------------------------------------------------------]]
 function GM:Initialize()
-	GAMEMODE.ShowScoreboard = false
+   GAMEMODE.ShowScoreboard = false
 
-	-- Hide these HUD elements.
-	local hideThese = {
-	   CHudHealth = true
-	}
+   -- Hide these HUD elements.
+   local hideThese = {
+      CHudHealth = true
+   }
 
-	hook.Add( "HUDShouldDraw", "HideHud", function( name )
+   hook.Add( "HUDShouldDraw", "HideHud", function( name )
 		if ( hideThese[ name ] ) then 
-	   		return false 
+		   return false 
 		end
-	end)
+   end)
 end
 
 --[[---------------------------------------------------------
@@ -28,48 +28,49 @@ end
 -----------------------------------------------------------]]
 function GM:InitPostEntity()
 end
+
 local function PlayAmbience()
-	return Sound("he/lull-01-lullnotnull.mp3")
+   return Sound("he/lull-01-lullnotnull.mp3")
 end
 
 local function nv_color()
-	local nv_color = Color(
-		120 or 255,
-		255 or 255,
-		120 or 255,
-		255)
-	return nv_color
+   local nv_color = Color(
+      120 or 255,
+      255 or 255,
+      120 or 255,
+      255)
+   return nv_color
 end
 --[[---------------------------------------------------------
    Name: gamemode:Think()
    Desc: Called every frame
------------------------------------------------------------]]
+   -----------------------------------------------------------]]
 function GM:Think()
-	if not timer.Exists("ambience_timer") then
-		timer.Create("ambience_timer", 72, 0, PlayAmbience)
-		surface.PlaySound(PlayAmbience())
-	end
-	if (IsValid(LocalPlayer()) and player_manager.GetPlayerClass(LocalPlayer()) == "player_monster") then
-		local light = DynamicLight(LocalPlayer():EntIndex())
-		if (light) then
-			light.Pos = LocalPlayer():GetPos() + Vector(0,0,30)
-			light.r = nv_color().r
-			light.g = nv_color().g
-			light.b = nv_color().b
-			light.Brightness = 1
-			light.Size = 750
-			light.Decay = 750 * 5
-			light.DieTime = CurTime() + 1
-			light.Style = 0
-		end
-	end
+   if not timer.Exists("ambience_timer") then
+      timer.Create("ambience_timer", 72, 0, PlayAmbience)
+      surface.PlaySound(PlayAmbience())
+   end
+   if (IsValid(LocalPlayer()) and player_manager.GetPlayerClass(LocalPlayer()) == "player_monster") then
+      local light = DynamicLight(LocalPlayer():EntIndex())
+      if (light) then
+	 light.Pos = LocalPlayer():GetPos() + Vector(0,0,30)
+	 light.r = nv_color().r
+	 light.g = nv_color().g
+	 light.b = nv_color().b
+	 light.Brightness = 1
+	 light.Size = 750
+	 light.Decay = 750 * 5
+	 light.DieTime = CurTime() + 1
+	 light.Style = 0
+      end
+   end
 
-	if (IsValid(self.TeamSelectFrame)) then
-		local panel = vgui.GetHoveredPanel()
-		if (IsValid(panel) and panel:GetName() == "select") then
-			self:DisplaySelectedModel(panel:GetModel())
-		end
-	end
+   if (IsValid(self.TeamSelectFrame)) then
+      local panel = vgui.GetHoveredPanel()
+      if (IsValid(panel) and panel:GetName() == "select") then
+	 self:DisplaySelectedModel(panel:GetModel())
+      end
+   end
 end
 
 --[[---------------------------------------------------------

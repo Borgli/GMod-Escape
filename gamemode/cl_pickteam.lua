@@ -3,74 +3,189 @@ include('shared.lua')
 --[[---------------------------------------------------------
    Name: gamemode:ShowTeam()
    Desc:
------------------------------------------------------------]]
-
+   -----------------------------------------------------------]]
 function GM:ShowTeam(ply)
-	
-	if (IsValid(self.TeamSelectFrame)) then return end
+   
+   if (IsValid(self.TeamSelectFrame)) then 
+      print("'IsValid(self.TeamSelectFrame', returning...")
+      return 
+   end
 
-	self.TeamSelectFrame = vgui.Create("DFrame")
-	self.TeamSelectFrame:SetTitle("Select Monster or Survivor")
+   self.TeamSelectFrame = vgui.Create("DFrame")
+   self.TeamSelectFrame:SetTitle("Select Monster or Survivor")
 
-	-- Right side of the spawn menu
-	local RightPanel = vgui.Create("DPanel", self.TeamSelectFrame)
-	RightPanel:SetPos(10, 30)
-	RightPanel:SetSize(ScrW() /4 , ScrH() - 50)
-	--RightPanel:SetBackgroundColor(Color(100,0,0,255))
+   -- Right side of the spawn menu
+   local RightPanel = vgui.Create("DPanel", self.TeamSelectFrame)
+   RightPanel:SetPos(10, 30)
+   RightPanel:SetSize(ScrW() /4 , ScrH() - 50)
+   --RightPanel:SetBackgroundColor(Color(100,0,0,255))
 
-	local MonsterButton = vgui.Create("DButton", RightPanel)
-	local w, h = RightPanel:GetSize()
-	MonsterButton:SetPos(0, 0)
-	MonsterButton:SetSize(w, (h/2)*(1/3))
-	MonsterButton:SetText("Monsters")
-	
+   local MonsterButton = vgui.Create("DButton", RightPanel)
+   local w, h = RightPanel:GetSize()
+   MonsterButton:SetPos(0, 0)
+   MonsterButton:SetSize(w, (h/2)*(1/3))
+   MonsterButton:SetText("Monsters")
 
-	local SurvivorButton = vgui.Create("DButton", RightPanel) 
-	local w, h = RightPanel:GetSize()
-	SurvivorButton:SetPos(0, (h/2)*(1/3))
-	SurvivorButton:SetSize(w, (h/2)*(1/3))
-	SurvivorButton:SetText("Survivors")
+   local SurvivorButton = vgui.Create("DButton", RightPanel) 
+   local w, h = RightPanel:GetSize()
+   SurvivorButton:SetPos(0, (h/2)*(1/3))
+   SurvivorButton:SetSize(w, (h/2)*(1/3))
+   SurvivorButton:SetText("Survivors")
 
-	local SpectatorButton = vgui.Create("DButton",RightPanel)
-	local w, h = RightPanel:GetSize()
-	SpectatorButton:SetPos(0, ((h/2)*(1/3))*2)
-	SpectatorButton:SetSize(w, (h/2)*(1/3))
-	SpectatorButton:SetText("Spectators")
-	function SpectatorButton.DoClick() self:HideTeam() RunConsoleCommand("changeteam", TEAM_SPECTATOR) end
+   local SpectatorButton = vgui.Create("DButton",RightPanel)
+   local w, h = RightPanel:GetSize()
+   SpectatorButton:SetPos(0, ((h/2)*(1/3))*2)
+   SpectatorButton:SetSize(w, (h/2)*(1/3))
+   SpectatorButton:SetText("Spectators")
 
-	local SelectPanel = vgui.Create("DScrollPanel", RightPanel)
-	local w, h = RightPanel:GetSize()
-	--TextPanel:SetPos(h/2, w/2)
-	SelectPanel:SetSize(w,h/2)
-	SelectPanel:SetBackgroundColor(Color(100,0,0,255))
-	SelectPanel:AlignBottom(0)
-	
-	--self:ClickMonsters(SelectPanel);
+   local SelectPanel = vgui.Create("DScrollPanel", RightPanel)
+   local w, h = RightPanel:GetSize()
+   --TextPanel:SetPos(h/2, w/2)
+   SelectPanel:SetSize(w,h/2)
+   SelectPanel:SetBackgroundColor(Color(100,0,0,255))
+   SelectPanel:AlignBottom(0)
+   
+   --self:ClickMonsters(SelectPanel);
 
-	function MonsterButton.DoClick() self:ClickMonsters(SelectPanel) end
-	function SurvivorButton.DoClick() self:ClickSurvivors(SelectPanel) end
+   function SpectatorButton.DoClick() 
+      print("Changing team to spectator!")
+      self:HideTeam() 
+      RunConsoleCommand("changeteam", TEAM_SPECTATOR) 
+   end
 
---[[
-	local Description = vgui.Create("DLabel", TextPanel)
-	Description:SetSize(TextPanel:GetSize())
-	Description:SetText("HEI")
-]]--
+   function MonsterButton.DoClick() 
+      print("Clicked on MonsterButton, calling ClickMonsters!")
+      self:ClickMonsters(SelectPanel) 
+   end
 
-	self.ModelSelect = vgui.Create("DModelPanel", self.TeamSelectFrame)
-	self.ModelSelect:SetPos(ScrW() /4, 30)
-	self.ModelSelect:SetSize((ScrW()/4) * 3, ScrH() - 50)
-	self.ModelSelect:SetLookAt(Vector(0,0,60))
-	self.ModelSelect:SetCamPos(Vector(30,0,65))
+   function SurvivorButton.DoClick() 
+      print("Clicked on SurvivorButton, calling ClickSurvivors!")
+      self:ClickSurvivors(SelectPanel) 
+   end
 
-	
+   --[[
+      local Description = vgui.Create("DLabel", TextPanel)
+      Description:SetSize(TextPanel:GetSize())
+      Description:SetText("HEI")
+   ]]--
 
+   self.ModelSelect = vgui.Create("DModelPanel", self.TeamSelectFrame)
+   self.ModelSelect:SetPos(ScrW() /4, 30)
+   self.ModelSelect:SetSize((ScrW()/4) * 3, ScrH() - 50)
+   self.ModelSelect:SetLookAt(Vector(0,0,60))
+   self.ModelSelect:SetCamPos(Vector(30,0,65))
 
-	self.TeamSelectFrame:SetSize(ScrW(), ScrH())
-	self.TeamSelectFrame:Center()
-	self.TeamSelectFrame:MakePopup()
-	self.TeamSelectFrame:SetKeyboardInputEnabled(false)
-
+   self.TeamSelectFrame:SetSize(ScrW(), ScrH())
+   self.TeamSelectFrame:Center()
+   self.TeamSelectFrame:MakePopup()
+   self.TeamSelectFrame:SetKeyboardInputEnabled(false)
 end
+
+
+
+--[[---------------------------------------------------------
+   Name: gamemode:HideTeam()
+   Desc:
+   -----------------------------------------------------------]]
+function GM:ClickSurvivors(SelectPanel)
+   local SurvivorModels = {
+      "models/player/kleiner.mdl",
+      "models/player/alyx.mdl",
+      "models/player/barney.mdl"
+   }
+   self:DisplayModelList(SelectPanel, SurvivorModels, TEAM_SURVIVORS, ply)
+
+   print("GM:ClickSurvivors called!")
+end
+
+-----------------------------------------------------------
+-- Name: GM:ClickMonsters
+-- Desc: Called on Monster button clicked.
+-----------------------------------------------------------
+function GM:ClickMonsters(SelectPanel)
+   local MonsterModels = {
+      "models/player/bobert/AOJoker.mdl",
+      "models/player/breen.mdl"
+   }
+   self:DisplayModelList(SelectPanel, MonsterModels, TEAM_MONSTERS, ply)
+
+   print("GM:ClickMonsters called!")
+end
+
+-----------------------------------------------------------
+-- Name: GM:DisplayModelList
+-- Desc: Called by GM:ClickMonsters or GM:ClickSurvivors
+--       to show the models to choose between.
+-----------------------------------------------------------
+function GM:DisplayModelList(SelectPanel, models, team)
+   print("GM:DisplayModelList called!")
+
+   local x = 0
+   local y = 0
+   
+   local w, h = SelectPanel:GetSize()
+   SelectPanel:Clear()
+   for i = 1, #models do
+      local SelectModel = vgui.Create("DModelPanel",SelectPanel, "select")
+      --SelectModel:SetPos(x/3 , h/3 * (y % 3))
+      SelectModel:SetPos(w/3 * x, h/3 * y)
+      SelectModel:SetSize(w/3,h/3)
+      if x == 2 then
+	 x = 0
+	 y = y + 1
+      else
+	 x = x + 1
+      end
+      SelectModel:SetLookAt(Vector(0,0,60))
+      SelectModel:SetCamPos(Vector(30,0,65))
+      SelectModel:SetModel(models[i])
+      SelectModel:GetEntity():SetEyeTarget(SelectModel:GetCamPos() - Vector(0,0,5))
+
+      function SelectModel:LayoutEntity(entity) return end
+      function SelectModel.DoClick()
+	 print("SelectModel.DoClick called!")
+	 RunConsoleCommand("changeteam", team)
+	 player_manager.SetPlayerClass(LocalPlayer(), "player_" .. (team == TEAM_MONSTERS and "monster" or "survivor"))
+	 --player_manager.RunClass(LocalPlayer(),"SetModel",models[i])
+	 self:HideTeam()
+      end
+   end
+end
+
+-----------------------------------------------------------
+-- Name: GM:DisplaySelectedModel
+-- Desc: Not sure exactly what it does, but it
+--       is called A LOT!
+-----------------------------------------------------------
+function GM:DisplaySelectedModel(model)
+   print("GM:DisplaySelectedModel called!")
+
+   if (not IsValid(self.ModelSelect)) then
+      self.ModelSelect = vgui.Create("DModelPanel", self.TeamSelectFrame)
+      self.ModelSelect:SetPos(ScrW() /4, 30)
+      self.ModelSelect:SetSize((ScrW()/4) * 3, ScrH() - 50)
+      self.ModelSelect:SetLookAt(Vector(0,0,60))
+      self.ModelSelect:SetCamPos(Vector(30,0,65))
+   end
+
+   if (self.ModelSelect:GetModel() ~= model) then
+      self.ModelSelect:SetModel(model)
+      self.ModelSelect:GetEntity():SetEyeTarget(self.ModelSelect:GetCamPos() - Vector(0,0,5))
+
+      function self.ModelSelect:LayoutEntity(entity) return end
+   end
+end
+
+function GM:HideTeam()
+   print("GM:HideTeam called!")
+
+   if (IsValid(self.TeamSelectFrame)) then
+      self.TeamSelectFrame:Remove()
+      self.TeamSelectFrame = nil
+   end
+end
+
+
 
 
 --[[--------------------------------------------------------
@@ -122,85 +237,3 @@ function GM:ShowTeam()
 
 end
 -----------------------------------------------------]]
-
-
---[[---------------------------------------------------------
-   Name: gamemode:HideTeam()
-   Desc:
------------------------------------------------------------]]
-
-function GM:ClickSurvivors(SelectPanel)
-	local SurvivorModels = {
-		"models/player/kleiner.mdl",
-		"models/player/alyx.mdl",
-		"models/player/barney.mdl"
-	}
-	self:DisplayModelList(SelectPanel, SurvivorModels, TEAM_SURVIVORS, ply)
-end
-
-function GM:ClickMonsters(SelectPanel)
-	local MonsterModels = {
-		"models/player/bobert/AOJoker.mdl",
-		"models/player/breen.mdl"
-	}
-	self:DisplayModelList(SelectPanel, MonsterModels, TEAM_MONSTERS, ply)
-end
-
-function GM:DisplayModelList(SelectPanel, models, team)
-	local x = 0
-	local y = 0
-	
-	local w, h = SelectPanel:GetSize()
-	SelectPanel:Clear()
-	for i = 1, #models do
-		local SelectModel = vgui.Create("DModelPanel",SelectPanel, "select")
-		--SelectModel:SetPos(x/3 , h/3 * (y % 3))
-		SelectModel:SetPos(w/3 * x, h/3 * y)
-		SelectModel:SetSize(w/3,h/3)
-		if x == 2 then
-			x = 0
-			y = y + 1
-		else
-			x = x + 1
-		end
-		SelectModel:SetLookAt(Vector(0,0,60))
-		SelectModel:SetCamPos(Vector(30,0,65))
-		SelectModel:SetModel(models[i])
-		SelectModel:GetEntity():SetEyeTarget(SelectModel:GetCamPos() - Vector(0,0,5))
-
-		function SelectModel:LayoutEntity(entity) return end
-		function SelectModel.DoClick()
-			RunConsoleCommand("changeteam", team)
-			player_manager.SetPlayerClass(LocalPlayer(), "player_" .. (team == TEAM_MONSTERS and "monster" or "survivor"))
-			--player_manager.RunClass(LocalPlayer(),"SetModel",models[i])
-			self:HideTeam()
-		end
-	end
-end
-
-function GM:DisplaySelectedModel(model)
-	if (not IsValid(self.ModelSelect)) then
-		self.ModelSelect = vgui.Create("DModelPanel", self.TeamSelectFrame)
-		self.ModelSelect:SetPos(ScrW() /4, 30)
-		self.ModelSelect:SetSize((ScrW()/4) * 3, ScrH() - 50)
-		self.ModelSelect:SetLookAt(Vector(0,0,60))
-		self.ModelSelect:SetCamPos(Vector(30,0,65))
-	end
-
-	if (self.ModelSelect:GetModel() ~= model) then
-		self.ModelSelect:SetModel(model)
-		self.ModelSelect:GetEntity():SetEyeTarget(self.ModelSelect:GetCamPos() - Vector(0,0,5))
-
-		function self.ModelSelect:LayoutEntity(entity) return end
-	end
-
-end
-
-function GM:HideTeam()
-
-	if (IsValid(self.TeamSelectFrame)) then
-		self.TeamSelectFrame:Remove()
-		self.TeamSelectFrame = nil
-	end
-
-end

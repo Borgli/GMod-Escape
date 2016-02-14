@@ -2,6 +2,8 @@
 AddCSLuaFile()
 
 include('taunt_camera.lua')
+   
+print("Setting up PLAYER structure.")
 
 local PLAYER = {}
 
@@ -39,6 +41,7 @@ end
 -- Ret1:
 --
 function PLAYER:Init()
+   print("player_survivor class inited!")
 end
 
 --
@@ -48,6 +51,7 @@ end
 -- Ret1:
 --
 function PLAYER:Spawn()
+   print("PLAYER:Spawn in player_survivor called!")
 end
 
 --
@@ -67,11 +71,13 @@ function PLAYER:Loadout()
 end
 
 function PLAYER:AssignModel(model)
-    self.PlayerModel = model
+   print("Assigning model through PLAYER:AssignModel!")
+   self.PlayerModel = model
 end
 
 function PLAYER:SetModel()
-    self.Player:SetModel(Model(self.PlayerModel))
+   print("Setting model through PLAYER:SetModel!")
+   self.Player:SetModel(Model(self.PlayerModel))
 end
 
 -- Clientside only
