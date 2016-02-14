@@ -10,15 +10,11 @@
 
 -----------------------------------------------------------]]
 
-include('obj_player_extend.lua')
-
-include('gravitygun.lua')
 include('player_shd.lua')
 include('animations.lua')
-include('player_class/player_default.lua')
+include('player_class/player_spectator.lua')
 include('player_class/player_survivor.lua')
 include('player_class/player_monster.lua')
-include('util.lua')
 
 GM.Name			= "Horror Escape"
 GM.Author		= "Ohm"
