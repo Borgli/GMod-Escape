@@ -6,16 +6,7 @@ include('shared.lua')
 -----------------------------------------------------------]]
 -- First time player spawns on server
 function GM:PlayerInitialSpawn(pl)
-	--[[
-    local teamn = math.random(1, 2) -- Takes a random number between 1 or 2
-    math.randomseed(os.time()) --This makes sure the teams will always be random
-    if team.NumPlayers(2) >= team.NumPlayers(1) and teamn == 2 then
-    pl:SetTeam(1)
-    
-	table.insert( ACTIVE_PLAYERS, pl );
-	end
-    ]]--
-   print("Inside GM:PlayerInitialSpawn!")
+   	print("Inside GM:PlayerInitialSpawn!")
     pl:SetTeam(TEAM_UNASSIGNED)
     table.insert(ACTIVE_PLAYERS, pl);
 end
@@ -27,6 +18,7 @@ end
 	Desc: Player's STEAMID has been authed
 -----------------------------------------------------------]]
 function GM:PlayerAuthed(ply, SteamID, UniqueID)
+	print("Inside GM:PlayerAuthed!")
 end
 
 --[[---------------------------------------------------------
@@ -35,8 +27,7 @@ end
 		return true to allow the pickup.
 -----------------------------------------------------------]]
 function GM:PlayerCanPickupWeapon(player, entity)
-
-	return true
+	return false
 
 end
 
@@ -46,7 +37,6 @@ end
 		 return true to allow the pickup.
 -----------------------------------------------------------]]
 function GM:PlayerCanPickupItem(player, entity)
-
 	return true
 
 end
@@ -56,7 +46,6 @@ end
 	Desc: Can the player unfreeze this entity & physobject
 -----------------------------------------------------------]]
 function GM:CanPlayerUnfreeze(ply, entity, physobject)
-
 	return true
 
 end
@@ -66,7 +55,11 @@ end
 	Desc: Player has disconnected from the server.
 -----------------------------------------------------------]]
 function GM:PlayerDisconnected(player)
+	print("Removed ACTIVE_PLAYERS!")
    table.remove( ACTIVE_PLAYERS, table.KeyFromValue( ACTIVE_PLAYERS, player ) );
+   if (table.HasValue(CURRENT_ALIVE,player)) then
+   	table.remove( CURRENT_ALIVE, table.KeyFromValue( CURRENT_ALIVE, player ) );
+   end
 
    DetectEndRound();
 end
@@ -192,7 +185,7 @@ function GM:PlayerDeath(ply, inflictor, attacker)
 
 	MsgAll(ply:Nick() .. " was killed by " .. attacker:GetClass() .. "\n")
 
-	table.remove( ACTIVE_PLAYERS, table.KeyFromValue( ACTIVE_PLAYERS, ply ) );
+	table.remove( CURRENT_ALIVE, table.KeyFromValue( CURRENT_ALIVE, ply ) );
 
 DetectEndRound( );
 
@@ -227,29 +220,7 @@ end
 	Desc: Called when a player spawns
 -----------------------------------------------------------]]
 function GM:PlayerSpawn(pl)
-   
-   --player_manager.SetPlayerClass(LocalPlayer(), "player_survivor")
---hook.Call("PlayerInitialSpawn", GAMEMODE, ply)
---[[
-	for k, v in pairs( player.GetAll( ) ) do
-		
-    	local teamn = math.random(1, 2)
-    	math.randomseed(os.time()) 
-    	if team.NumPlayers(2) >= team.NumPlayers(1) and teamn == 2 then 
-    	v:SetTeam(1)
-    	v:UnSpectate()
-    	v:Spawn()
-    	table.insert( ACTIVE_PLAYERS, v );
-    	
-			end
-
-	
-        --gamemode.Call ("PlayerInitialSpawn", v)
-
-        --table.insert( ACTIVE_PLAYERS, v );
-    end
-
---]]
+   print("GM:PlayerSpawn called!")
 	
 	-- If the player doesn't have a team in a TeamBased game
 	-- then spawn him as a spectator
@@ -260,7 +231,7 @@ function GM:PlayerSpawn(pl)
 	-- Stop observer mode
 	pl:UnSpectate()
 	player_manager.OnPlayerSpawn(pl)
-	player_manager.RunClass(pl, "Spawn")
+	--player_manager.RunClass(pl, "Spawn")
 
 	-- Call item loadout function
 	hook.Call("PlayerLoadout", GAMEMODE, pl)
@@ -270,25 +241,6 @@ function GM:PlayerSpawn(pl)
 	pl:SetupHands()
 end
 	
-
---[[
-	table.insert(CURRENT_ALIVE, pl)
-
-	if (pl:Team() == TEAM_SURVIVORS) then
-	 	player_manager.SetPlayerClass(pl, "player_survivor")
-	else
-		player_manager.SetPlayerClass(pl, "player_monster")
-		pl:GodEnable()
-	end
-	
-
-	if (not IsValid(ACTIVE_PLAYERS)) then ACTIVE_PLAYERS = {} end
-	table.insert(ACTIVE_PLAYERS, pl)
-
-	hook.Call("RenderScreenspaceEffects", GAMEMODE)
-	
-end
-	--]]-------------------------------------
 --[[---------------------------------------------------------
 	Name: gamemode:PlayerSetModel()
 	Desc: Set the player's model
@@ -296,6 +248,8 @@ end
 function GM:PlayerSetModel(pl)
 
    print("GM:PlayerSetModel called!")
+   pl:SetModel(Model(pl:GetInfo("cl_playermodel")))
+
 	--local model = player_manager.TranslatePlayerModel("joker")
 	--[[local model = "models/player/bobert/joker.mdl"
 	util.PrecacheModel(model)
@@ -603,179 +557,38 @@ function GM:PlayerSwitchFlashlight(ply, SwitchOn)
 	return ply:CanUseFlashlight()
 end
 
---[[---------------------------------------------------------
-	Name: gamemode:PlayerCanJoinTeam(ply, teamid)
-	Desc: Allow mods/addons to easily determine whether a player
-		can join a team or not
------------------------------------------------------------]]
-function GM:PlayerCanJoinTeam(ply, teamid)
-
-	local TimeBetweenSwitches = GAMEMODE.SecondsBetweenTeamSwitches or 10
-	if (ply.LastTeamSwitch and RealTime()-ply.LastTeamSwitch < TimeBetweenSwitches) then
-		ply.LastTeamSwitch = ply.LastTeamSwitch + 1
-		ply:ChatPrint(Format("Please wait %i more seconds before trying to change team again", (TimeBetweenSwitches - (RealTime() - ply.LastTeamSwitch) + 1 )))
-		return false
-	end
-
-	-- Already on this teamnot 
-	if (ply:Team() == teamid) then
-		ply:ChatPrint("You're already on that team")
-		return false
-	end
-
-	return true
-
-end
-
---[[---------------------------------------------------------
-	Name: gamemode:PlayerRequestTeam()
-	Desc: Player wants to change team
------------------------------------------------------------]]
-function GM:PlayerRequestTeam(ply, teamid)
-
-	-- No changing teams if not teambasednot 
-	if (not GAMEMODE.TeamBased) then return end
-
-	-- This team isn't joinable
-	if (not team.Joinable(teamid)) then
-		ply:ChatPrint("You can't join that team")
-		return end
-
-	-- This team isn't joinable
-	if (not GAMEMODE:PlayerCanJoinTeam(ply, teamid)) then
-		-- Messages here should be outputted by this function
-		return end
-
-	GAMEMODE:PlayerJoinTeam(ply, teamid)
-
-end
-
---[[---------------------------------------------------------
-	Name: gamemode:PlayerJoinTeam()
-	Desc: Make player join this team
------------------------------------------------------------]]
-function GM:PlayerJoinTeam(ply, teamid)
---[[--------------------------------------------------------------------
-	local iOldTeam = ply:Team()
-
-	if (ply:Alive()) then
-		if (iOldTeam == TEAM_SPECTATOR or iOldTeam == TEAM_UNASSIGNED) then
-			ply:KillSilent()
-		else
-			ply:Kill()
-		end
-	end
-
-	ply:SetTeam(teamid)
-	ply.LastTeamSwitch = RealTime()
-
-	GAMEMODE:OnPlayerChangedTeam(ply, iOldTeam, teamid)
---]]--------------------------------------------------------------------
-end
-
---[[---------------------------------------------------------
-	Name: gamemode:OnPlayerChangedTeam(ply, oldteam, newteam)
------------------------------------------------------------]]
-function GM:OnPlayerChangedTeam(ply, oldteam, newteam)
-
-	-- Here's an immediate respawn thing by default. If you want to
-	-- re-create something more like CS or some shit you could probably
-	-- change to a spectator or something while dead.
-
-	--[[----------------------------------------------------------------
-	if (newteam == TEAM_SPECTATOR) then
-
-		-- If we changed to spectator mode, respawn where we are
-		local Pos = ply:EyePos()
-		ply:Spawn()
-		ply:SetPos(Pos)
-
-	elseif (oldteam == TEAM_SPECTATOR) then
-
-		-- If we're changing from spectator, join the game
-		ply:Spawn()
-
-	else
-
-		-- If we're straight up changing teams just hang
-		-- around until we're ready to respawn onto the
-		-- team that we chose
-
-	end
-	--]]---------------------------------------------------------------
-	PrintMessage(HUD_PRINTTALK, Format("%s joined '%s'", ply:Nick(), team.GetName(newteam)))
-
-end
     -- Creates a new round
-
 function GM:NEW_ROUND( )
-	
-    --if ( not ACTIVE_PLAYERS ) then ACTIVE_PLAYERS = { }; 
-	--end
-	ACTIVE_PLAYERS = {}
-	for k, v in pairs(player.GetAll()) do
-		if (IsValid(v)) then
-			if (v:Team() ~= TEAM_SPECTATOR and v:Team() ~= TEAM_UNASSIGNED) then
-				table.insert(ACTIVE_PLAYERS, v)
-				print(v:Nick())
-				v:UnSpectate()
-				v:Spawn()
-			end
-		end
-	end
-	if (#ACTIVE_PLAYERS >= 1) then
-		PrintMessage(HUD_PRINTCENTER, "New round!")
-	else
+ 	assert(ACTIVE_PLAYERS,"No ACTIVE_PLAYERS!")
+
+ 	local pl = ACTIVE_PLAYERS
+ 	CURRENT_ALIVE = {}
+
+ 	for i = 1, #pl do
+ 		if (pl[i]:Team() == TEAM_UNASSIGNED) then
+ 			pl[i]:PrintMessage(HUD_PRINTCENTER, "Please choose a team to join next round! (Press F2)")
+ 		elseif (pl[i]:Team() == TEAM_SPECTATOR) then
+ 			pl[i]:PrintMessage(HUD_PRINTCENTER, "Please choose a team to join next round! (Press F2)")
+ 		else
+			pl[i]:PrintMessage(HUD_PRINTCENTER, "New round!")
+			pl[i]:UnSpectate()
+			pl[i]:Spawn()
+			table.insert(CURRENT_ALIVE, pl[i])
+ 		end
+ 	end
+
+	if (#CURRENT_ALIVE < 1) then
 		PrintMessage(HUD_PRINTCENTER, "Choose a team for game to start!")
-		timer.Create("tryagain",2,0,function() timer.Stop("tryagain") self:NEW_ROUND() end)
+		timer.Create("tryagain",1,0,function() timer.Stop("tryagain") self:NEW_ROUND() end)
 	end
-	--[[
-    for k, v in pairs( player.GetAll( ) ) do
-		
-    	local teamn = math.random(1, 2)
-    	math.randomseed(os.time()) 
-    	if team.NumPlayers(2) >= team.NumPlayers(1) and teamn == 2 then 
-    	v:SetTeam(1)
-    	v:UnSpectate()
-    	v:Spawn()
-    	table.insert( ACTIVE_PLAYERS, v );
-    	
-		end
-	end	
-	]]--
-
 end
-
-
-   --[[ 
-    for k, v in pairs( player.GetAll( ) ) do
-       gamemode.Call ("PlayerSpawn", v)
-       table.insert( ACTIVE_PLAYERS, v );
-    end
-    --]]
-
 
 --Detects if the round is over or not
 
 function DetectEndRound( )
-    local _team1count = 0;
-    local _team2count = 0;
-	if (not IsValid(ACTIVE_PLAYERS)) then
-		ACTIVE_PLAYERS = {}
-	end
-    for k, v in pairs( ACTIVE_PLAYERS ) do
-        if (not IsValid(v)) then
-            table.remove( ACTIVE_PLAYERS, v );
-        else
-            if ( v:Team( ) == TEAM_MONSTER ) then
-                _team1count = _team1count + 1;
-            else
-                _team2count = _team2count + 1;
-            end
-        end
-    end
+	assert(CURRENT_ALIVE,"No CURRENT_ALIVE in DetectEndRound!")
 
-    if ( table.Count( ACTIVE_PLAYERS ) < 2 or _team1count == 0 or _team2count == 0 ) then hook.Call( "GAME_OVER", GAMEMODE ) end;
+   if (table.Count(CURRENT_ALIVE) < 2) then hook.Call( "GAME_OVER", GAMEMODE ) end;
 end
 
 -- Ends the round and initializes a new one.
@@ -783,16 +596,14 @@ end
 function GM:GAME_OVER( )
 	PrintMessage(HUD_PRINTCENTER, "Game over!")
     for k, v in pairs( player.GetAll( ) ) do
-        v:SetTeam( TEAM_SPECTATOR )
         v:Spectate( OBS_MODE_CHASE ) -- when you spawn them call UnSpectate( ) on them
     end
 
-    ACTIVE_PLAYERS = { }
-
-
-    timer.Simple( 10, function( )
-        hook.Call( "NEW_ROUND", GAMEMODE )
-    end )
+    if (not timer.Exists("nextround")) then
+    	timer.Create("nextround", 10, 0, function( )
+       	hook.Call( "NEW_ROUND", GAMEMODE )
+    	end )
+  	end
 
 end
 
@@ -911,5 +722,117 @@ end
 -----------------------------------------------------------]]
 function GM:PlayerButtonDown(ply, btn) end
 function GM:PlayerButtonUp(ply, btn) end
+
+--[[---------------------------------------------------------
+	Name: gamemode:PlayerRequestTeam()
+	Desc: Player wants to change team
+-----------------------------------------------------------]]
+function GM:PlayerRequestTeam(ply, teamid)
+	print("PlayerRequestTeam was called by " .. ply:Nick())
+
+	-- No changing teams if not teambasednot 
+	if (not GAMEMODE.TeamBased) then return end
+
+	-- This team isn't joinable
+	if (not team.Joinable(teamid)) then
+		ply:ChatPrint("You can't join that team")
+		return end
+
+	-- This team isn't joinable
+	if (not GAMEMODE:PlayerCanJoinTeam(ply, teamid)) then
+		-- Messages here should be outputted by this function
+		return end
+
+	print("Player " .. ply:Nick() .. " joined team " .. team.GetName(teamid))
+	GAMEMODE:PlayerJoinTeam(ply, teamid)
+
+end
+
+--[[---------------------------------------------------------
+	Name: gamemode:PlayerJoinTeam()
+	Desc: Make player join this team
+-----------------------------------------------------------]]
+function GM:PlayerJoinTeam(ply, teamid)
+--[[--------------------------------------------------------------------
+	local iOldTeam = ply:Team()
+
+	if (ply:Alive()) then
+		if (iOldTeam == TEAM_SPECTATOR or iOldTeam == TEAM_UNASSIGNED) then
+			ply:KillSilent()
+		else
+			ply:Kill()
+		end
+	end
+
+	ply:SetTeam(teamid)
+	ply.LastTeamSwitch = RealTime()
+
+	GAMEMODE:OnPlayerChangedTeam(ply, iOldTeam, teamid)
+--]]--------------------------------------------------------------------
+	ply:Kill()
+	ply:SetTeam(teamid)
+
+end
+
+
+--[[---------------------------------------------------------
+	Name: gamemode:OnPlayerChangedTeam(ply, oldteam, newteam)
+-----------------------------------------------------------]]
+function GM:OnPlayerChangedTeam(ply, oldteam, newteam)
+
+	-- Here's an immediate respawn thing by default. If you want to
+	-- re-create something more like CS or some shit you could probably
+	-- change to a spectator or something while dead.
+
+	--[[----------------------------------------------------------------
+	if (newteam == TEAM_SPECTATOR) then
+
+		-- If we changed to spectator mode, respawn where we are
+		local Pos = ply:EyePos()
+		ply:Spawn()
+		ply:SetPos(Pos)
+
+	elseif (oldteam == TEAM_SPECTATOR) then
+
+		-- If we're changing from spectator, join the game
+		ply:Spawn()
+
+	else
+
+		-- If we're straight up changing teams just hang
+		-- around until we're ready to respawn onto the
+		-- team that we chose
+
+	end
+	--]]---------------------------------------------------------------
+	PrintMessage(HUD_PRINTTALK, Format("%s joined '%s'", ply:Nick(), team.GetName(newteam)))
+
+end
+
+--[[---------------------------------------------------------
+	Name: gamemode:PlayerCanJoinTeam(ply, teamid)
+	Desc: Allow mods/addons to easily determine whether a player
+		can join a team or not
+-----------------------------------------------------------]]
+function GM:PlayerCanJoinTeam(ply, teamid)
+	--[[
+	local TimeBetweenSwitches = GAMEMODE.SecondsBetweenTeamSwitches or 10
+	if (ply.LastTeamSwitch and RealTime()-ply.LastTeamSwitch < TimeBetweenSwitches) then
+		ply.LastTeamSwitch = ply.LastTeamSwitch + 1
+		ply:ChatPrint(Format("Please wait %i more seconds before trying to change team again", (TimeBetweenSwitches - (RealTime() - ply.LastTeamSwitch) + 1 )))
+		return false
+	end
+
+	-- Already on this teamnot 
+	if (ply:Team() == teamid) then
+		ply:ChatPrint("You're already on that team")
+		return false
+	end
+	]]--
+	ply:PrintMessage(HUD_PRINTTALK,"Changes will take effect next round!")
+	return true
+
+end
+
 
 concommand.Add("changeteam", function(pl, cmd, args) hook.Call("PlayerRequestTeam", GAMEMODE, pl, tonumber(args[ 1 ])) end)

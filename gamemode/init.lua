@@ -10,7 +10,7 @@ include("player.lua")
 
 resource.AddWorkshop("400762901") -- Joker Playermodel workshop: http://steamcommunity.com/sharedfiles/filedetails/?id=400762901
 
-CURRENT_ALIVE = {}
+
 
 GM.PlayerSpawnTime = {}
 
@@ -26,12 +26,14 @@ end
 function WaitForPlayers()
    -- Sets required players to start a game
    if (table.Count ( ACTIVE_PLAYERS ) >= 1) then 
+   		print("ACTIVE_PLAYERS = " .. #ACTIVE_PLAYERS)
+   		PrintMessage(HUD_PRINTCENTER, "Pre round preptime")
       timer.Stop("waitingforply")
       timer.Create("preptime", 5, 0, function() timer.Stop("preptime") hook.Call("NEW_ROUND", GAMEMODE) end)
    else
       PrintMessage(HUD_PRINTCENTER, "Waiting for more players")
       if not timer.Start("waitingforply") then
-	 timer.Create("waitingforply", 2, 0, WaitForPlayers)
+				timer.Create("waitingforply", 2, 0, WaitForPlayers)
       end
    end
 end

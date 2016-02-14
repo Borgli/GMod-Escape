@@ -146,6 +146,7 @@ function GM:DisplayModelList(SelectPanel, models, team)
 	 print("SelectModel.DoClick called!")
 	 RunConsoleCommand("changeteam", team)
 	 player_manager.SetPlayerClass(LocalPlayer(), "player_" .. (team == TEAM_MONSTERS and "monster" or "survivor"))
+    RunConsoleCommand("cl_playermodel",models[i])
 	 --player_manager.RunClass(LocalPlayer(),"SetModel",models[i])
 	 self:HideTeam()
       end

@@ -49,6 +49,7 @@ end
 -- Ret1:
 --
 function PLAYER:Spawn()
+	print("PLAYER:Spawn in player_survivor called!")
 end
 
 --

@@ -1,4 +1,5 @@
 
+
 AddCSLuaFile()
 
 include('taunt_camera.lua')
@@ -22,6 +23,7 @@ PLAYER.TeammateNoCollide	= true		-- Do we collide with teammates or run straight
 PLAYER.AvoidPlayers			= true		-- Automatically swerves around other players
 PLAYER.UseVMHands			= true		-- Uses viewmodel hands
 
+PLAYER.PlayerModel          = "models/player/kleiner.mdl"
 --
 -- Name: PLAYER:SetupDataTables
 -- Desc: Set up the network table accessors
@@ -47,6 +49,7 @@ end
 -- Ret1:
 --
 function PLAYER:Spawn()
+    print("PLAYER:Spawn in player_survivor called!")
 end
 
 --

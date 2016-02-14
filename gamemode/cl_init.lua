@@ -33,7 +33,7 @@ local function PlayAmbience()
    return Sound("he/lull-01-lullnotnull.mp3")
 end
 
-local function nv_color()
+--[[local function nv_color()
    local nv_color = Color(
       120 or 255,
       255 or 255,
@@ -41,6 +41,8 @@ local function nv_color()
       255)
    return nv_color
 end
+--]]
+
 --[[---------------------------------------------------------
    Name: gamemode:Think()
    Desc: Called every frame
@@ -50,7 +52,7 @@ function GM:Think()
       timer.Create("ambience_timer", 72, 0, PlayAmbience)
       surface.PlaySound(PlayAmbience())
    end
-   if (IsValid(LocalPlayer()) and player_manager.GetPlayerClass(LocalPlayer()) == "player_monster") then
+   --[[if (IsValid(LocalPlayer()) and player_manager.GetPlayerClass(LocalPlayer()) == "player_monster") then
       local light = DynamicLight(LocalPlayer():EntIndex())
       if (light) then
 	 light.Pos = LocalPlayer():GetPos() + Vector(0,0,30)
@@ -63,12 +65,12 @@ function GM:Think()
 	 light.DieTime = CurTime() + 1
 	 light.Style = 0
       end
-   end
+   end--]]
 
    if (IsValid(self.TeamSelectFrame)) then
       local panel = vgui.GetHoveredPanel()
       if (IsValid(panel) and panel:GetName() == "select") then
-	 self:DisplaySelectedModel(panel:GetModel())
+	 	self:DisplaySelectedModel(panel:GetModel())
       end
    end
 end

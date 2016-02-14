@@ -28,6 +28,7 @@ TEAM_SURVIVORS = 1
 TEAM_MONSTERS  = 2
 TEAM_SPECTATOR = 3
 ACTIVE_PLAYERS = {}
+CURRENT_ALIVE = {}
 
 
 --[[---------------------------------------------------------
