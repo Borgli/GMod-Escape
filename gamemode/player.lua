@@ -1,5 +1,9 @@
 include('shared.lua')
 
+ACTIVE_PLAYERS = {}
+CURRENT_ALIVE = {}
+ROUND_ACTIVE = false
+
 --[[---------------------------------------------------------
 	Name: gamemode:PlayerInitialSpawn()
 	Desc: Called just before the player's first spawn
@@ -561,19 +565,18 @@ end
 function GM:NEW_ROUND( )
  	assert(ACTIVE_PLAYERS,"No ACTIVE_PLAYERS!")
 
- 	local pl = ACTIVE_PLAYERS
  	CURRENT_ALIVE = {}
 
- 	for i = 1, #pl do
- 		if (pl[i]:Team() == TEAM_UNASSIGNED) then
- 			pl[i]:PrintMessage(HUD_PRINTCENTER, "Please choose a team to join next round! (Press F2)")
- 		elseif (pl[i]:Team() == TEAM_SPECTATOR) then
- 			pl[i]:PrintMessage(HUD_PRINTCENTER, "Please choose a team to join next round! (Press F2)")
+ 	for number, pl in pairs(player.GetAll()) do
+ 		if (pl:Team() == TEAM_UNASSIGNED) then
+ 			pl:PrintMessage(HUD_PRINTCENTER, "Please choose a team to join next round! (Press F2)")
+ 		elseif (pl:Team() == TEAM_SPECTATOR) then
+ 			pl:PrintMessage(HUD_PRINTCENTER, "Please choose a team to join next round! (Press F2)")
  		else
-			pl[i]:PrintMessage(HUD_PRINTCENTER, "New round!")
-			pl[i]:UnSpectate()
-			pl[i]:Spawn()
-			table.insert(CURRENT_ALIVE, pl[i])
+			pl:PrintMessage(HUD_PRINTCENTER, "New round!")
+			pl:UnSpectate()
+			pl:Spawn()
+			table.insert(CURRENT_ALIVE, pl)
  		end
  	end
 
@@ -598,13 +601,8 @@ function GM:GAME_OVER( )
     for k, v in pairs( player.GetAll( ) ) do
         v:Spectate( OBS_MODE_CHASE ) -- when you spawn them call UnSpectate( ) on them
     end
-
-    if (not timer.Exists("nextround")) then
-    	timer.Create("nextround", 10, 0, function( )
-       	hook.Call( "NEW_ROUND", GAMEMODE )
-    	end )
-  	end
-
+    
+    timer.Create("nextround", 10, 0, function() timer.Stop("nextround") hook.Call("NEW_ROUND", GAMEMODE) end)
 end
 
 --[[---------------------------------------------------------

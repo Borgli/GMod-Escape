@@ -11,9 +11,6 @@ include("player.lua")
 resource.AddWorkshop("400762901") -- Joker Playermodel workshop: http://steamcommunity.com/sharedfiles/filedetails/?id=400762901
 
 
-
-GM.PlayerSpawnTime = {}
-
 --[[---------------------------------------------------------
    Name: gamemode:Initialize()
    Desc: Called immediately after starting the gamemode
@@ -27,7 +24,7 @@ function WaitForPlayers()
    -- Sets required players to start a game
    if (table.Count ( ACTIVE_PLAYERS ) >= 1) then 
    		print("ACTIVE_PLAYERS = " .. #ACTIVE_PLAYERS)
-   		PrintMessage(HUD_PRINTCENTER, "Pre round preptime")
+   		PrintMessage(HUD_PRINTCENTER, "Pre-round preptime")
       timer.Stop("waitingforply")
       timer.Create("preptime", 5, 0, function() timer.Stop("preptime") hook.Call("NEW_ROUND", GAMEMODE) end)
    else
@@ -44,7 +41,6 @@ end
 -----------------------------------------------------------]]
 function GM:InitPostEntity()
    print("All entities spawned!")
-	--hook.Call( "NEW_ROUND", GAMEMODE )
 end
 
 --[[---------------------------------------------------------
