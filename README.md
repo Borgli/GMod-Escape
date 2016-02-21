@@ -1,5 +1,6 @@
 # secretOHMproject
-Repository for the Ohm project known as "horror escape"
+Repository for the project known as "horror escape".
+This is a game mode for the game Garry's Mod.
 
 ##How to install:
 
