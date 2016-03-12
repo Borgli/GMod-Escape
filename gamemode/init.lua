@@ -1,12 +1,14 @@
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("cl_pickteam.lua")
 AddCSLuaFile("shared.lua")
+AddCSLuaFile("cl_showhelp.lua")
 
 AddCSLuaFile("player_shd.lua")
 AddCSLuaFile("animations.lua")
 
 include("shared.lua")
 include("player.lua")
+include("cl_showhelp.lua")
 
 resource.AddWorkshop("400762901") -- Joker Playermodel workshop: http://steamcommunity.com/sharedfiles/filedetails/?id=400762901
 
@@ -121,10 +123,7 @@ timer.Create("HostnameThink", 30, 0, HostnameThink)
 function GM:ShowTeam(ply)
    print("GM:ShowTeam called!")
 
-   if (not GAMEMODE.TeamBased) then 
-      print("Note: 'not GAMEMODE.TeamBased', returning from ShowTeam...")
-      return 
-   end
+   
    -- Disabled for dev purposes. If enabled will not allow players to change team before a timer has ended.
    if (not GAMEMODE.DevMode) then
       print("Inside 'not GAMEMODE.DevMode'")
@@ -139,6 +138,14 @@ function GM:ShowTeam(ply)
    -- For clientside see cl_pickteam.lua
    ply:SendLua("GAMEMODE:ShowTeam()")
 end
+
+-- For clientside see cl_showhelp.lua[ERROR] gamemodes/secretohmproject/gamemode/init.lua:148: Tried to use a NULL entity!
+
+function GM:ShowHelp(ply)
+
+
+   ply.SendLua("GAMEMODE:ShowHelp()")
+end   
 
 --
 -- CheckPassword(steamid, networkid, server_password, password, name)

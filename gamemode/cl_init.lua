@@ -1,6 +1,7 @@
 
 include('cl_pickteam.lua')
 include('shared.lua')
+include ('cl_showhelp.lua')
 
 
 --[[---------------------------------------------------------
@@ -56,7 +57,7 @@ function GM:Think()
       local light = DynamicLight(LocalPlayer():EntIndex())
       if (light) then
 	 light.Pos = LocalPlayer():GetPos() + Vector(0,0,30)
-	 light.r = nv_color().r
+	 light.r = nv_color().rc
 	 light.g = nv_color().g
 	 light.b = nv_color().b
 	 light.Brightness = 1
