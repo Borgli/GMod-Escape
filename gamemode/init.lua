@@ -123,6 +123,10 @@ timer.Create("HostnameThink", 30, 0, HostnameThink)
 function GM:ShowTeam(ply)
    print("GM:ShowTeam called!")
 
+  if (not GAMEMODE.TeamBased) then 
+      print("Note: 'not GAMEMODE.TeamBased', returning from ShowTeam...")
+      return 
+   end
    
    -- Disabled for dev purposes. If enabled will not allow players to change team before a timer has ended.
    if (not GAMEMODE.DevMode) then
