@@ -145,7 +145,12 @@ function GM:DisplayModelList(SelectPanel, models, team)
       function SelectModel.DoClick()
 	 print("SelectModel.DoClick called!")
 	 RunConsoleCommand("changeteam", team)
-	 player_manager.SetPlayerClass(LocalPlayer(), "player_" .. (team == TEAM_MONSTERS and "monster" or "survivor"))
+	 --player_manager.SetPlayerClass(LocalPlayer(), "player_" .. (team == TEAM_MONSTERS and "monster" or "survivor"))
+    --assert(player_manager.GetPlayerClass(LocalPlayer()) != nil,"Problem!")
+    --print("No problem!")
+    net.Start("setclass")
+    net.WriteString("player_" .. (team == TEAM_MONSTERS and "monster" or "survivor"))
+    net.SendToServer()
     RunConsoleCommand("cl_playermodel",models[i])
 	 --player_manager.RunClass(LocalPlayer(),"SetModel",models[i])
 	 self:HideTeam()
@@ -159,7 +164,7 @@ end
 --       is called A LOT!
 -----------------------------------------------------------
 function GM:DisplaySelectedModel(model)
-   print("GM:DisplaySelectedModel called!")
+   --print("GM:DisplaySelectedModel called!")
 
    if (not IsValid(self.ModelSelect)) then
       self.ModelSelect = vgui.Create("DModelPanel", self.TeamSelectFrame)

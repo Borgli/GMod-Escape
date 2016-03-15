@@ -230,10 +230,13 @@ function GM:PlayerSpawn(pl)
 	-- then spawn him as a spectator
 	if (GAMEMODE.TeamBased and (pl:Team() == TEAM_SPECTATOR or pl:Team() == TEAM_UNASSIGNED)) then
 		GAMEMODE:PlayerSpawnAsSpectator(pl)
+		--player_manager.SetPlayerClass(pl, "player_monster")
 		return
 	end
 	-- Stop observer mode
 	pl:UnSpectate()
+
+	--assert(player_manager.GetPlayerClass(pl) != nil,"No playerclass!")
 	player_manager.OnPlayerSpawn(pl)
 	--player_manager.RunClass(pl, "Spawn")
 
@@ -254,13 +257,6 @@ function GM:PlayerSetModel(pl)
    print("GM:PlayerSetModel called!")
    pl:SetModel(Model(pl:GetInfo("cl_playermodel")))
 
-	--local model = player_manager.TranslatePlayerModel("joker")
-	--[[local model = "models/player/bobert/joker.mdl"
-	util.PrecacheModel(model)
-	pl:SetModel(model)]]--
-	--pl:SetModel(Model("models/player/bobert/joker.mdl"))
-	--player_manager.RunClass(pl, "SetModel")
-	--pl:SetModel(Model("models/narry/shrek_playermodel_v1.mdl"))
 end
 
 --[[---------------------------------------------------------
@@ -288,7 +284,9 @@ end
 	Desc: Give the player the default spawning weapons/ammo
 -----------------------------------------------------------]]
 function GM:PlayerLoadout(pl)
-
+	local class = player_manager.GetPlayerClass(pl)
+	print(class)
+	print(pl:Nick() .. " CALLED PlayerLoadout!!!")
 	player_manager.RunClass(pl, "Loadout")
 
 end
@@ -834,3 +832,11 @@ end
 
 
 concommand.Add("changeteam", function(pl, cmd, args) hook.Call("PlayerRequestTeam", GAMEMODE, pl, tonumber(args[ 1 ])) end)
+util.AddNetworkString("setclass")
+net.Receive("setclass",function (len, pl) 
+	print("Try to send ")
+	if (IsValid(pl) and pl:IsPlayer()) then
+		print("Class set!")
+		player_manager.SetPlayerClass(pl, net.ReadString())
+	end
+end)

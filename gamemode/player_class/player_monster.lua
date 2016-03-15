@@ -60,7 +60,8 @@ end
 --
 function PLAYER:Loadout()
     self.Player:StripWeapons();
-    self.Player:Give("ct_knife");
+    print("Called Loadout!! HEY HEY HEY!")
+    //self.Player:Give("weapon_knife");
     --self.Player:GiveAmmo(255, "Pistol", true)
 
 end
