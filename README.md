@@ -13,9 +13,8 @@ Clone the repo into `\Steam\steamapps\common\GarrysMod\garrysmod\gamemodes\`
 "shared.lua" - file shared by the server and the client.
 
 ##Issues:
-- When picking either a survivor or a monster, the first option is always the one you get transformed into.
-  * When picking a survivor, Dr. Kleiner is always chosen.
-  * When picking a monster, the Joker is always chosen (I get the error object, so make sure the player has it).
+- Round system is bugged and needs refining.
+- Welcome screen not yet working, but is being worked on.
 
 ##New TODO:
 - Create welcome screen.
