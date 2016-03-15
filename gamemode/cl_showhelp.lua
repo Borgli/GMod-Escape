@@ -6,23 +6,23 @@ include ('shared.lua')
 
 function GM:ShowHelp(ply)
 
-local Frame = vgui.Create( "DFrame" )
-	Frame:SetTitle( "Help Menu" )
-	Frame:SetPos( 5, 5 )
-	Frame:SetSize( 300, 150 )
+local frame = vgui.Create( "DFrame" )
+frame:SetSize( 500, 250 )
+frame:Center()
+frame:MakePopup()
 
-local Button = vgui.Create( "DButton", Frame )
-	Button:SetText( "Button1" )
-	Button:SetTextColor( Color( 255, 255, 255 ) )
-	Button:SetPos( 100, 100 )
-	Button:SetSize( 100, 30 )
-	Button.Paint = function( self, w, h )
-	draw.RoundedBox( 0, 0, 0, w, h, Color( 41, 128, 185, 250 ) ) -- Draw a blue button
+local richtext = vgui.Create( "RichText", frame)
+richtext:Dock( FILL )
+
+
+richtext:InsertColorChange( 255, 255, 224, 255 )
+richtext:AppendText( "Welcome to Horror Escape!\n\n" )
+
+richtext:InsertColorChange( 192, 192, 192, 255 )
+richtext:AppendText( "There will be more info here later \n\n\n\n\n\n\n\n\n\n\n\n\n" )
+
+richtext:InsertColorChange( 255, 64, 64, 255 )
+richtext:AppendText( "#ServerBrowser_ESRBNotice" )
+
 end
 
-	Frame:SetVisible( true )
-	Frame:SetDraggable( true )
-	Frame:ShowCloseButton( true )
-	Frame:MakePopup()
-
-end
