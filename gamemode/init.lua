@@ -147,8 +147,7 @@ end
 
 function GM:ShowHelp(ply)
 
-
-   ply.SendLua("GAMEMODE:ShowHelp()")
+   ply:SendLua("GAMEMODE:ShowHelp()")
 end   
 
 --
