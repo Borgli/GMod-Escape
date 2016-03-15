@@ -104,7 +104,7 @@ end
 -----------------------------------------------------------
 function GM:ClickMonsters(SelectPanel)
    local MonsterModels = {
-      "models/player/bobert/AOJoker.mdl",
+      "models/player/bobert/aojoker.mdl",
       "models/player/breen.mdl"
    }
    self:DisplayModelList(SelectPanel, MonsterModels, TEAM_MONSTERS, ply)
