@@ -13,7 +13,7 @@ local Y_MULTIPLIER = ScrH() / SCREEN_H
 
 local frame = vgui.Create( "DFrame" )
 frame:SetTitle("Help Menu")
-frame:SetSize( (ScrW()/3)*2, (ScrH()/3) *2)
+frame:SetSize( (ScrW() * 0.3, (ScrH() * 0.3)
 frame:SetSizable( true )
 frame:Center()
 frame:MakePopup()
@@ -64,7 +64,7 @@ DButton:SetSize (80, 50)
 function DButton.DoClick()
 	
 local frame = vgui.Create( "DFrame" )
-frame:SetTitle( "HTML Example" )
+frame:SetTitle( "Web Browser" )
 frame:SetSize( ScrW() * 0.75, ScrH() * 0.75 )
 frame:Center()
 frame:MakePopup()
