@@ -58,12 +58,24 @@ end
 
 local DButton = vgui.Create("DButton", frame)
 DButton:SetPos (120, 420)
-DButton:SetText ("Button2")
+DButton:SetText ("Wiki")
 DButton:SetSize (80, 50)
 
 function DButton.DoClick()
 	
+local frame = vgui.Create( "DFrame" )
+frame:SetTitle( "HTML Example" )
+frame:SetSize( ScrW() * 0.75, ScrH() * 0.75 )
+frame:Center()
+frame:MakePopup()
+
+local html = vgui.Create( "HTML", frame )
+html:Dock( FILL )
+html:OpenURL( "wiki.garrysmod.com" )
+
 end	
+
+
 
 
 
