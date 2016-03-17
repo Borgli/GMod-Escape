@@ -13,7 +13,8 @@ local Y_MULTIPLIER = ScrH() / SCREEN_H
 
 local frame = vgui.Create( "DFrame" )
 frame:SetTitle("Help Menu")
-frame:SetSize( 500 * X_MULTIPLIER, 250 * Y_MULTIPLIER )
+frame:SetSize( (ScrW()/3)*2, (ScrH()/3) *2)
+frame:SetSizable( true )
 frame:Center()
 frame:MakePopup()
 
@@ -29,14 +30,40 @@ richtext:InsertColorChange( 192, 192, 192, 255 )
 richtext:AppendText( "This gamemode is still in the making.\n" )
 
 richtext:InsertColorChange( 192, 192, 192, 255 )
-richtext:AppendText( "There will be more info here in the future. \n\n\n\n\n\n\n\n\n" )
+richtext:AppendText( "There will be more info here in the future. \n\n\n\n" )
+
+/*
+net.Start("activeplayers")
+net.WriteString("activeplayers")
+net.SendToServer()
+*/
+richtext:InsertColorChange( 255, 255, 224, 255 )
+richtext:AppendText( "Players connected: " .. #player.GetAll() .. "\n\n\n\n\n")
 
 richtext:InsertColorChange( 255, 255, 224, 255 )
-richtext:AppendText( "Author: Ohm\n\n\n" )
+richtext:AppendText( "Author: Ohm\n\n" )
 
 --[Because why the hell not]--
 richtext:InsertColorChange( 255, 64, 64, 255 )
 richtext:AppendText( "#ServerBrowser_ESRBNotice" )
+
+local DButton = vgui.Create("DButton", frame)
+DButton:SetPos (10, 420)
+DButton:SetText ("Choose a team")
+DButton:SetSize (80, 50)
+
+function DButton.DoClick()
+	self:ShowTeam()
+end
+
+local DButton = vgui.Create("DButton", frame)
+DButton:SetPos (120, 420)
+DButton:SetText ("Button2")
+DButton:SetSize (80, 50)
+
+function DButton.DoClick()
+	
+end	
 
 
 

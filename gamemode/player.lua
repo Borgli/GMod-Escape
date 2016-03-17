@@ -12,8 +12,12 @@ ROUND_ACTIVE = false
 function GM:PlayerInitialSpawn(pl)
    	print("Inside GM:PlayerInitialSpawn!")
     pl:SetTeam(TEAM_UNASSIGNED)
-    table.insert(ACTIVE_PLAYERS, pl);
+    table.insert(ACTIVE_PLAYERS, pl); 
+
+    pl:SendLua("GAMEMODE:ShowHelp()")
 end
+
+
 
 
 
@@ -840,3 +844,12 @@ net.Receive("setclass",function (len, pl)
 		player_manager.SetPlayerClass(pl, net.ReadString())
 	end
 end)
+
+/*
+util.AddNetworkString("activeplayers")
+net.Receive("activeplayers",function (len, pl)
+	net.Start("activeplayers")
+	net.WriteInt(#player.GetAll())
+
+end)
+*/
