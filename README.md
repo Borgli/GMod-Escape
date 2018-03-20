@@ -1,22 +1,22 @@
-# secretOHMproject
+# Horror Escape
 Repository for the project known as "horror escape".
 This is a game mode for the game Garry's Mod.
 
-##How to install:
+## How to install:
 
 Clone the repo into `\Steam\steamapps\common\GarrysMod\garrysmod\gamemodes\` 
 
-##Quick info:
+## Quick info:
 
 "init.lua" - lua file that is executed by the server when it starts.
 "cl_init.lua" - lua file that is executed by the client when it connects.
 "shared.lua" - file shared by the server and the client.
 
-##Issues:
+## Issues:
 - Round system is bugged and needs refining.
 - Welcome screen not yet working, but is being worked on.
 
-##New TODO:
+## New TODO:
 - Create welcome screen.
 - Scorescreen.
 - Partly alpha blood overlay for survivors.
